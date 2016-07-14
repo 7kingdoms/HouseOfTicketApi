@@ -6,7 +6,7 @@ use Mail;
 use JWTAuth;
 use Validator;
 use Config;
-use App\User;
+
 use Illuminate\Http\Request;
 use Illuminate\Mail\Message;
 use Dingo\Api\Routing\Helpers;
@@ -15,16 +15,39 @@ use Illuminate\Support\Facades\Password;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Dingo\Api\Exception\ValidationHttpException;
 
+use App\User;
+use App\UserReset;
+
 class AuthController extends Controller
 {
     use Helpers;
 
+    public function check(){
+      if (! $user = JWTAuth::parseToken()->authenticate()){
+         return response()->json(['user_not_found'], 404);
+      }else{
+         return array_only($user->toArray(),['name','surname']);
+      }
+
+    }
+
+    public function me(){
+      if (! $user = JWTAuth::parseToken()->authenticate()) {
+            return response()->json(['user_not_found'], 404);
+        }else{
+          return array_except($user->toArray(),['id','profile_photo','status','register_from','token'
+            ,'created_at','updated_at','updatedby_adminid','updatedby_adminname','deleted_at']);
+        }
+    }
+
     public function login(Request $request)
     {
-        $credentials = $request->only(['email', 'password']);
+
+
+        $credentials = $request->only(['username', 'password']);
 
         $validator = Validator::make($credentials, [
-            'email' => 'required',
+            'username' => 'required',
             'password' => 'required',
         ]);
 
@@ -40,26 +63,61 @@ class AuthController extends Controller
             return $this->response->error('could_not_create_token', 500);
         }
 
+
         return response()->json(compact('token'));
+
     }
 
     public function signup(Request $request)
     {
+
+
         //return 'ok';
-        $signupFields = Config::get('boilerplate.signup_fields');
-        $hasToReleaseToken = Config::get('boilerplate.signup_token_release');
+        $signupFields = [
+            'user_type','name','surname','birthday','country_id','province_id'
+           ,'district_id','amphur_id','postcode', 'gender','phone', 'email', 'password','address_no'
+           ,'mooban', 'street','marital_status', 'children_no' , 'education', 'family_income', 'career' ,'career_other'
+           ,'position','nationality','username'
+        ];
+
 
         $userData = $request->only($signupFields);
 
-        $validator = Validator::make($userData, Config::get('boilerplate.signup_fields_rules'));
+        if($request->input('user_type') == 1){
+          $userData['id_card'] = $request->input('id_card');
+        }else{
+          $userData['id_card'] = $request->input('id_card_2');
+        }
+
+        $checker = [
+          'user_type' => 'required',
+          'id_card' => 'required|unique:users,id_card,0,id,deleted_at,NULL',
+          'name' => 'required',
+        	'surname' => 'required',
+        	'country_id' => 'required',
+        	'province_id' => 'required',
+        	'district_id' => 'required',
+        	'postcode' => 'required',
+        	'gender' => 'required',
+        	'phone' => 'required',
+        	'email' => 'email',
+        	'username' => 'required|unique:users,username,0,id,deleted_at,NULL',
+        	'password' => 'required|min:6'
+        ];
+
+        $validator = Validator::make($userData, $checker );
 
         if($validator->fails()) {
             throw new ValidationHttpException($validator->errors()->all());
         }
 
+
         User::unguard();
+
         $userData['token'] = hash_hmac('sha256', str_random(40), config('app.key'));
-        $userData['status'] = 'P';
+        $userData['status'] = 'A';
+        $userData['birthday'] = $request->input('years'). '-' . $request->input('months'). '-' . $request->input('days');
+        $userData['register_from'] = 'web';
 
         $user = User::create($userData);
         User::reguard();
@@ -68,14 +126,70 @@ class AuthController extends Controller
             return $this->response->error('could_not_create_user', 500);
         }
 
-        Mail::send('emails.activation', ['user' => $user], function ($m) use ($user) {
-            $m->from('no-reply@houseofticket.com', 'HouseOfTicket');
+        if($user->email != ''){
+          Mail::send('emails.registersuccess', ['user' => $user], function ($m) use ($user) {
+              $m->from('admin@houseofticket.com', 'HouseOfTicket');
+              $m->to($user->email, $user->name)->subject('ยืนยันการลงทะเบียน House Of Ticket');
+          });
+        }
 
-            $m->to($user->email, $user->name)->subject('Please Activation!');
-        });
+        return $this->response->created();
+    }
 
-        if($hasToReleaseToken) {
-            return $this->login($request);
+    public function update(Request $request)
+    {
+
+
+        //return 'ok';
+        $signupFields = [
+            'name','surname','birthday','country_id','province_id'
+           ,'district_id','amphur_id','postcode', 'gender','phone', 'email', 'password','address_no'
+           ,'mooban', 'street'
+        ];
+
+
+        $userData = $request->only($signupFields);
+
+        if($request->input('user_type') == 1){
+          $userData['id_card'] = $request->input('id_card');
+        }else{
+          $userData['id_card'] = $request->input('id_card_2');
+        }
+
+        $checker = [
+          'name' => 'required',
+        	'surname' => 'required',
+        	'country_id' => 'required',
+        	'province_id' => 'required',
+        	'district_id' => 'required',
+        	'postcode' => 'required',
+        	'gender' => 'required',
+        	'phone' => 'required',
+        	'email' => 'email',
+        ];
+
+        $validator = Validator::make($userData, $checker );
+
+        if($validator->fails()) {
+            throw new ValidationHttpException($validator->errors()->all());
+        }
+
+        $user = JWTAuth::parseToken()->authenticate();
+
+        $user->birthday     = $request->input('years'). '-' . $request->input('months'). '-' . $request->input('days');
+        $user->name         = $request->input('name');
+        $user->surname      = $request->input('surname');
+        $user->country_id   = $request->input('country_id');
+        $user->province_id  = $request->input('province_id');
+        $user->district_id  = $request->input('district_id');
+        $user->postcode     = $request->input('postcode');
+        $user->gender       = $request->input('gender');
+        $user->email        = $request->input('email');
+
+        $user->save();
+
+        if(!$user->id) {
+            return $this->response->error('could_not_update_user', 500);
         }
 
         return $this->response->created();
@@ -83,23 +197,58 @@ class AuthController extends Controller
 
     public function recovery(Request $request)
     {
-        $validator = Validator::make($request->only('email'), [
-            'email' => 'required'
+        $validator = Validator::make($request->all(), [
+            'id_card' => 'required',
+            'days' => 'required',
+            'months' => 'required',
+            'years' => 'required',
         ]);
+
+
+
 
         if($validator->fails()) {
             throw new ValidationHttpException($validator->errors()->all());
         }
 
-        $response = Password::sendResetLink($request->only('email'), function (Message $message) {
-            $message->subject(Config::get('boilerplate.recovery_email_subject'));
-        });
+        $birthday = $request->input('years').'-'.$request->input('months').'-'.$request->input('days');
 
-        switch ($response) {
-            case Password::RESET_LINK_SENT:
-                return $this->response->noContent();
-            case Password::INVALID_USER:
-                return $this->response->errorNotFound();
+        $user = User::where('id_card',$request->input('id_card'))
+                ->where('birthday',$birthday)->first();
+
+        $email = "";
+        if($user){
+          $email = $user->email == ''?'':$user->email;
+
+          if($email == ''){
+            $v = Validator::make(['email'=> $user->username],['email' => 'required|email' ]);
+            if($v->fails()){
+              return $this->response->error('1', 404);
+            }
+            $email = $user->username;
+          }
+
+        }
+
+        if($email == ''){
+          return $this->response->error('2', 404);
+        }else{
+          $userReset = UserReset::where('user_id',$user->id)->first();
+
+          if(!$userReset){
+            $userReset = new UserReset;
+            $userReset->user_id = $user->id;
+          }
+
+          $userReset->token = hash_hmac('sha256', str_random(40) . $user->id , config('app.key'));
+          $userReset->save();
+
+          Mail::send('emails.password_reset', ['user' => $user,'userReset' => $userReset], function ($m) use ($user) {
+              $m->from('admin@houseofticket.com', 'HouseOfTicket');
+              $m->to($user->email, $user->name)->subject('แจ้งการเปลี่ยนแปลงรหัสผ่าน House Of Ticket.');
+          });
+
+          return "true";
         }
     }
 
@@ -134,6 +283,34 @@ class AuthController extends Controller
             default:
                 return $this->response->error('could_not_reset_password', 500);
         }
+    }
+
+    public function checkemail(Request $request){
+      //return  $request->input('email');
+      if(User::where('username',$request->input('username'))->count() > 0){
+        return 'false';
+      }
+      return 'true';
+
+    }
+    public function check_id_card(Request $request){
+      //return  $request->input('email');
+      if(User::where('id_card',$request->input('id_card'))->count() > 0){
+        return 'false';
+      }
+      return 'true';
+
+    }
+
+    public function sendmail(){
+      $user =  User::find(1);
+      //return view('emails.registersuccess')->with('user',$user);
+      if($user->email != ''){
+        Mail::send('emails.registersuccess', ['user' => $user], function ($m) use ($user) {
+            $m->from('admin@houseofticket.com', 'HouseOfTicket');
+            $m->to($user->email, $user->name)->subject('ยืนยันการลงทะเบียน House Of Ticket');
+        });
+      }
     }
 
 
