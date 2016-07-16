@@ -19,7 +19,4 @@ class EventZone extends Model
     	return $this->hasMany('App\EventSeat');
     }
 
-    public function reservation_zones(){
-    	return $this->hasMany('App\EventReservationZone');
-    }
 }
