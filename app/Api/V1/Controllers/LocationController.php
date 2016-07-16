@@ -22,28 +22,28 @@ class LocationController extends Controller
 {
 
     public function province(Request $request){
-      return Province::select(['id','name_en'])->orderBy('name_en')->get();
+      return Province::select(['id','name_th'])->orderBy('name_th')->get();
 
     }
     public function amphur(Request $request){
 
-      $rows = Amphur::orderBy('name_en')->get();
+      $rows = Amphur::orderBy('name_th')->get();
 
       $resp = [];
 
       foreach($rows as $row){
-        $resp[$row->province_id][] = array( 'id'=>$row->id , 'name_en'=>$row->name_en);
+        $resp[$row->province_id][] = array( 'id'=>$row->id , 'name_th'=>$row->name_th);
       }
 
         return $resp;
     }
 
     public function district(Request $request){
-        $rows = District::orderBy('name_en')->get();
+        $rows = District::orderBy('name_th')->get();
         $resp = [];
 
         foreach($rows as $row){
-          $resp[$row->amphur_id][] = array( 'id'=>$row->id , 'name_en'=>$row->name_en);
+          $resp[$row->amphur_id][] = array( 'id'=>$row->id , 'name_th'=>$row->name_th);
         }
 
         return $resp;

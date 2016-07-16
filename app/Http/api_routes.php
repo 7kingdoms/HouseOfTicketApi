@@ -26,7 +26,7 @@ $api->version('v1', function ($api) {
 			$api->post('user/update','App\Api\V1\Controllers\AuthController@update');
 		});
 
-		$api->get('sendmail','App\Api\V1\Controllers\AuthController@sendmail'); 
+		$api->get('sendmail','App\Api\V1\Controllers\AuthController@sendmail');
 
 	});
 
@@ -34,6 +34,10 @@ $api->version('v1', function ($api) {
 	$api->get('location/amphur' ,'App\Api\V1\Controllers\LocationController@amphur');
 	$api->get('location/district' ,'App\Api\V1\Controllers\LocationController@district');
 	$api->get('location/zipcode' ,'App\Api\V1\Controllers\LocationController@zipcode');
+
+
+	$api->post('ebiz/callback' ,'App\Api\V1\Controllers\VendorPaymentController@ebizCallback');
+	$api->get('ebiz/view_callback' ,'App\Api\V1\Controllers\VendorPaymentController@ebizViewCallback');
 	//
 	// // example of protected route
 	// $api->get('protected', ['middleware' => ['api.auth'], function () {
