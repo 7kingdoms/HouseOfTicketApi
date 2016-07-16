@@ -38,6 +38,16 @@ $api->version('v1', function ($api) {
 
 	$api->post('ebiz/callback' ,'App\Api\V1\Controllers\VendorPaymentController@ebizCallback');
 	$api->get('ebiz/view_callback' ,'App\Api\V1\Controllers\VendorPaymentController@ebizViewCallback');
+	$api->post('payment2c2b/submit' ,'App\Api\V1\Controllers\Payment2c2bController@submit');
+	$api->post('payment2c2b/success' ,'App\Api\V1\Controllers\Payment2c2bController@success');
+	$api->post('payment2c2b/callback' ,'App\Api\V1\Controllers\Payment2c2bController@callback');
+
+
+// 	$app->group(['prefix' => 'payment', 'namespace' => 'App\Http\Controllers'], function () use ($app) {
+// 	$app->get('payment2c2p/{order_id}', [
+// 	    'as' => 'payment.payment2c2p', 'uses' => 'PaymentController@payment2c2p'
+// 	]);
+// });
 	//
 	// // example of protected route
 	// $api->get('protected', ['middleware' => ['api.auth'], function () {
