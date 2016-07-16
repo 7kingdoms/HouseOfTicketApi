@@ -39,6 +39,9 @@ $api->version('v1', function ($api) {
 
 	$api->post('ebiz/callback' ,'App\Api\V1\Controllers\VendorPaymentController@ebizCallback');
 	$api->get('ebiz/view_callback' ,'App\Api\V1\Controllers\VendorPaymentController@ebizViewCallback');
+
+		$api->post('order_payment' ,'App\Api\V1\Controllers\OrderPaymentController@submit');
+
 	//
 	// // example of protected route
 	// $api->get('protected', ['middleware' => ['api.auth'], function () {

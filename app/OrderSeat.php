@@ -5,17 +5,20 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class EventReservationZone extends Model
+class OrderSeat extends Model
 {
     use SoftDeletes;
 
     protected $dates = ['deleted_at'];
 
-    public function reservation(){
-    	return $this->belongsTo('App\EventReservation');
+    public function order(){
+    	return $this->belongsTo('App\Order');
     }
 
+
     public function zone(){
-    	return $this->belongsTo('App\EventZone');
+    	return $this->belongsTo('App\EventZone', 'event_zone_id');
     }
+
+
 }
