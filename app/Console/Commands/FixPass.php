@@ -39,14 +39,14 @@ class FixPass extends Command
     public function handle()
     {
     //    $users = User::where('register_from','<>','C')->get();
-        $users = User::whereNull('register_from')->get();
+        $users = User::whereNull('register_from')->where('id','>',12902)->get();
       //  $users = User::get();
 
         $this->info(' Start. ' . "\n");
         echo count($users) . '\n';
         foreach($users as $user){
 
-          $this->info($user->name . "\n");
+          $this->info($user->id.':'.$user->name . "\n");
           $user->password = bcrypt($user->password);
           $user->save();
         }
