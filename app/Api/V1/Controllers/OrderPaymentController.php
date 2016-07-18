@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Api\V1\Service\OrderService;
 use App\Api\V1\Service\Payment2c2pService;
+use App\Api\V1\Service\PaymentTransactionService;
 use App\Order;
 
 class OrderPaymentController extends Controller
@@ -29,10 +30,8 @@ class OrderPaymentController extends Controller
 		{
 			$order = $orderServ->SetStatusExpired($order);
 
-			return redirect(env('FRONTEND_URL').'test/payment2c2b_expired');
-		}
-
-		
+			return redirect(env('FRONTEND_PAYMENT_EXPIRED'));
+		}		
 
 
 		if($order->payment_vendor_id == 1){
@@ -40,9 +39,26 @@ class OrderPaymentController extends Controller
 			$pay2c2pServ = new Payment2c2pService();
 			$order = $pay2c2pServ->CreatePayment($order);
 		}
+	}
 
+	public function response_front2c2p(Request $request){
+		$order_id = $request->input('order_id');
+		$order = Order::find($order_id);
 
+		if(!is_null($order)){
+			$transServ = new PaymentTransactionService();
+			$transServ->SaveResponseFrontPayment($order, $request->all());
+		}
 
+		if($request->input('payment_status') == '000'){
+			return redirect(env('FRONTEND_PAYMENT_SUCCESS').$order_id);
+		}
+		if($request->input('payment_status') == '003'){
+			return redirect(env('FRONTEND_PAYMENT_CANCEL').$order_id);
+		}
+		if($request->input('payment_status') == '999'){
+			return redirect(env('FRONTEND_PAYMENT_ERROR').$order_id);
+		}
 
 	}
 }
