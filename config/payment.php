@@ -11,6 +11,15 @@ return [
 
 		], 
 
+		'order_status' => [
+			'booking' => 'B0', 
+			'payment_boonterm' => 'P0', 
+			'payment_2c2p' => 'P1', 
+			'payment_complete' => '01', 
+			'expired' => 'OE', 
+		],
+
+
 	'order_expired_in' => '10 minute',
 	'transaction_request_type' => 'request',
 	'order_invoice_prefix' => 'INV',
