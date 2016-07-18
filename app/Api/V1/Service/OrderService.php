@@ -2,6 +2,7 @@
 namespace App\Api\V1\Service;
 
 use App\Order as ThisModel;
+use App\OrderSeat;
 use App\OrderEventAdditional;
 
 	class OrderService{
@@ -23,17 +24,24 @@ use App\OrderEventAdditional;
 		}
 
 		public function SetStatusExpired($order){
-				$order->status = 'OE';
+			$status = config('payment.order_status.expired');
+				$order->status = $status;
 				$order->save();
 
+				OrderSeat::where('order_id', '=', $order->id)->update(['status' => config('payment.order_status.expired')]);
 				return $order;
 		}
-		public function SetStatusWaiting($order){
-				$order->status = 'W';
+
+		public function SetStatusPayment2c2p($order){
+			$status = config('payment.order_status.payment_2c2p');
+				$order->status = $status;
 				$order->save();
 
+				OrderSeat::where('order_id', '=', $order->id)->update(['status' => $status]);
 				return $order;
+
 		}
+
 
 		public function GetOrderByID($order_id){
 			return $this->model->with([ 'user', 'seats', 'seats.zone', 'shipping_vendor'])->where('id', '=', $order_id)->first();

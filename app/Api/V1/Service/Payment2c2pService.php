@@ -16,10 +16,10 @@ class Payment2c2pService{
 
 		public function CreatePayment($order){
 			$orderServ = new OrderService();
-         $order_id = $order->id;
-         $invoice_no = $order->invoice_no;
-         // echo $invoice_no;exit;
-         // echo $invoice_no;exit;
+      $order_id = $order->id;
+      $invoice_no = $order->invoice_no;
+      // echo $invoice_no;exit;
+      // echo $invoice_no;exit;
 
       // $currency = 'payment_desc';
       // $amount = $order->total_price;
@@ -40,24 +40,26 @@ class Payment2c2pService{
       	'hash_value' => $HashValue, 
       ];
 
-      $transServ = new PaymentTransactionService();
-      $transServ->SaveRequestPayment($order, $data);
+    $transServ = new PaymentTransactionService();
+    $transServ->SaveRequestPayment($order, $data);
 
 		echo "<form action='".$this->c2p_paymenturl."' method='POST' name='authForm'>";
-   echo "<input type='hidden' id='version' name='version' value='" .$data['version']. "'/>"; 
-   echo "<input type='hidden' id='merchant_id' name='merchant_id' value='" .$data['merchant_id']. "'/>"; 
-   echo "<input type='hidden' id='order_id' name='order_id' value='" .$data['order_id']. "' />    ";                     
-   echo "<input type='hidden' id='invoice_no' name='invoice_no' value='" .$data['invoice_no']. "' />    ";                     
-   echo "<input type='hidden' id='amount' name='amount' value='" .$data['amount']. "'/>"; 
-   echo "<input type='hidden' id='customer_email' name='customer_email' value='" .$data['customer_email']. "'/>"; 
-   echo "<input type='hidden' id='hash_value' name='hash_value' value='" .$data['hash_value']. "'/>";
-   echo "</form>";
+    echo "<input type='hidden' id='version' name='version' value='" .$data['version']. "'/>"; 
+    echo "<input type='hidden' id='merchant_id' name='merchant_id' value='" .$data['merchant_id']. "'/>"; 
+    echo "<input type='hidden' id='order_id' name='order_id' value='" .$data['order_id']. "' />    ";                     
+    echo "<input type='hidden' id='invoice_no' name='invoice_no' value='" .$data['invoice_no']. "' />    ";                     
+    echo "<input type='hidden' id='amount' name='amount' value='" .$data['amount']. "'/>"; 
+    echo "<input type='hidden' id='customer_email' name='customer_email' value='" .$data['customer_email']. "'/>"; 
+    echo "<input type='hidden' id='hash_value' name='hash_value' value='" .$data['hash_value']. "'/>";
+    echo "</form>";
 
-   echo "<script language='JavaScript'>";
-   echo "document.authForm.submit();";     //submit form to 2c2p Redirect 
-	echo "</script>";
+    echo "<script language='JavaScript'>";
+    echo "document.authForm.submit();";     //submit form to 2c2p Redirect 
+   	echo "</script>";
 
 
+    $order = $orderServ->SetStatusPayment2c2p($order);
+    return $order;
 	}
 
 	private function GenerateAmountStr($amount){

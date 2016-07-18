@@ -18,29 +18,29 @@ class OrderPaymentController extends Controller
 
 		$orderServ = new OrderService();
 		$order = $orderServ->GetOrderByID($order_id);
-
-		if($orderServ->IsExpired($order))
-		{
-			$order = $orderServ->SetStatusExpired($order);
-
-			return redirect(env('FRONTEND_URL').'payment_expired');
-		}
-
-		$order = $orderServ->SetStatusWaiting($order);
-
-
+		
 		$total_price = $orderServ->CalculateOrderPrice($order);
 
 		$order->price = $total_price;
 		$order->invoice_no = $orderServ->GenerateInvoiceNo($order);
 		$order->save();
 
-		if($order->payment_vendor_id == 1){
+		if($orderServ->IsExpired($order))
+		{
+			$order = $orderServ->SetStatusExpired($order);
 
+			return redirect(env('FRONTEND_URL').'test/payment2c2b_expired');
+		}
+
+		
+
+
+		if($order->payment_vendor_id == 1){
 			
 			$pay2c2pServ = new Payment2c2pService();
-			$pay2c2pServ->CreatePayment($order);
+			$order = $pay2c2pServ->CreatePayment($order);
 		}
+
 
 
 
