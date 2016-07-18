@@ -13,5 +13,7 @@ return [
 
 	'order_expired_in' => '10 minute',
 	'transaction_request_type' => 'request',
+	'order_invoice_prefix' => 'INV',
+
 	];
 	

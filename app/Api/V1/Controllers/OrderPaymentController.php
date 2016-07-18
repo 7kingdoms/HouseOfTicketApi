@@ -32,6 +32,7 @@ class OrderPaymentController extends Controller
 		$total_price = $orderServ->CalculateOrderPrice($order);
 
 		$order->price = $total_price;
+		$order->invoice_no = $orderServ->GenerateInvoiceNo($order);
 		$order->save();
 
 		if($order->payment_vendor_id == 1){

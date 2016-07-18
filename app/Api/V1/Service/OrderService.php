@@ -70,8 +70,8 @@ use App\OrderEventAdditional;
 
 				$c_seat_price+= $zone_price;
 
-				$addition_price = $this->GetAdditionalPrice($order_seat);
-				$c_seat_price+= $addition_price;
+				// $addition_price = $this->GetAdditionalPrice($order_seat);
+				// $c_seat_price+= $addition_price;
 
 				$total+= $c_seat_price;
 			}
@@ -82,12 +82,9 @@ use App\OrderEventAdditional;
 			return $total;
 		}
 
-		public function GenerateOrderNo($order){
-			if(env('APP_ENV') != 'local'){
-				return $order->id;
-			}
+		public function GenerateInvoiceNo($order){
 
-			return config('payment.2c2p.prefix_orderid').date('mds').'_'.$order->id;
+			return config('payment.order_invoice_prefix').substr('0000000000'.$order->id, -10);
 		}
 
 	}
