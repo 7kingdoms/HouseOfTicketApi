@@ -1,5 +1,5 @@
 <?php
-namespace App\Api\V1\Service;
+namespace App\Http\Service;
 
 use App\Order as ThisModel;
 use App\OrderSeat;
@@ -39,6 +39,20 @@ use App\OrderEventAdditional;
 
 				OrderSeat::where('order_id', '=', $order->id)->update(['status' => $status]);
 				return $order;
+
+		}
+
+		public function SetStatusPaided($order){
+			$status = config('payment.order_status.paided');
+			if(is_null($order->paided_at)){
+				$order->paided_at = date('Y-m-d H:i:s');
+			}
+			$order->status = $status;
+			$order->save();
+
+			OrderSeat::where('order_id', '=', $order->id)->update(['status' => $status]);
+				
+			return $order;
 
 		}
 
