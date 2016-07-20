@@ -114,10 +114,10 @@ class AuthController extends Controller
 
         User::unguard();
 
-        $userData['token'] = hash_hmac('sha256', str_random(40), config('app.key'));
+        //$userData['token'] = hash_hmac('sha256', str_random(40), config('app.key'));
         $userData['status'] = 'A';
         $userData['birthday'] = $request->input('years'). '-' . $request->input('months'). '-' . $request->input('days');
-        $userData['register_from'] = 'web';
+        $userData['register_from'] = 'w';
 
         $userData['password'] = bcrypt($userData['password']);
 
@@ -178,15 +178,25 @@ class AuthController extends Controller
 
         $user = JWTAuth::parseToken()->authenticate();
 
+
+
         $user->birthday     = $request->input('years'). '-' . $request->input('months'). '-' . $request->input('days');
         $user->name         = $request->input('name');
         $user->surname      = $request->input('surname');
         $user->country_id   = $request->input('country_id');
         $user->province_id  = $request->input('province_id');
+        $user->amphur_id    = $request->input('amphur_id');
         $user->district_id  = $request->input('district_id');
         $user->postcode     = $request->input('postcode');
         $user->gender       = $request->input('gender');
         $user->email        = $request->input('email');
+        $user->nationality  = $request->input('nationality');
+        $user->phone        = $request->input('phone');
+
+        $user->address_no   = $request->input('address_no');
+        $user->mooban       = $request->input('mooban');
+        $user->street       = $request->input('street');
+
 
         $user->save();
 
