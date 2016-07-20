@@ -28,6 +28,7 @@ $api->version('v1', function ($api) {
 
 		$api->get('sendmail','App\Api\V1\Controllers\AuthController@sendmail');
 
+
 	});
 
 	$api->get('location/province' ,'App\Api\V1\Controllers\LocationController@province');
@@ -38,6 +39,7 @@ $api->version('v1', function ($api) {
 
 	$api->post('ebiz/callback' ,'App\Api\V1\Controllers\VendorPaymentController@ebizCallback');
 	$api->get('ebiz/view_callback' ,'App\Api\V1\Controllers\VendorPaymentController@ebizViewCallback');
+
 
 	$api->post('payment2c2b/submit' ,'App\Api\V1\Controllers\Payment2c2bController@submit');
 	$api->post('payment2c2b/success' ,'App\Api\V1\Controllers\Payment2c2bController@success');
