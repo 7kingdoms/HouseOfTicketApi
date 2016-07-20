@@ -119,6 +119,8 @@ class AuthController extends Controller
         $userData['birthday'] = $request->input('years'). '-' . $request->input('months'). '-' . $request->input('days');
         $userData['register_from'] = 'web';
 
+        $userData['password'] = bcrypt($userData['password']);
+
         $user = User::create($userData);
         User::reguard();
 
