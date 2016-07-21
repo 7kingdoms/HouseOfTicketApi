@@ -16,14 +16,14 @@ class Payment2c2pService{
 
 		public function CreatePayment($order){
 			$orderServ = new OrderService();
-      $order_id = $order->id;
+      $order_id = $order->order_no;
       $invoice_no = $order->invoice_no;
       // echo $invoice_no;exit;
       // echo $invoice_no;exit;
 
       // $currency = 'payment_desc';
       // $amount = $order->total_price;
-      $amount = $this->GenerateAmountStr($order->price);
+      $amount = $this->GenerateAmountStr($order->total_price);
       // echo $amount;exit;
       $customer_email = $order->user->email;
 
