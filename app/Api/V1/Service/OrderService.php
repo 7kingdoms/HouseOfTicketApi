@@ -84,6 +84,10 @@ use App\OrderEventAdditional;
 		}
 
 		public function GetShippingPrice($order){
+			if(is_null($order->shipping_vendor))
+			{
+				return 0;
+			}
 			return $order->shipping_vendor->price;
 		}
 
