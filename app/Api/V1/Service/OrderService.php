@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Service;
+namespace App\Api\V1\Service;
 
 use App\Order as ThisModel;
 use App\OrderSeat;
@@ -61,6 +61,10 @@ use App\OrderEventAdditional;
 			return $this->model->with([ 'user', 'seats', 'seats.zone', 'shipping_vendor'])->where('id', '=', $order_id)->first();
 		}
 
+		public function GetOrderByOrderNo($order_no){
+			return $this->model->where('order_no', '=', $order_no)->first();
+		}
+
 		public function GetAdditionalPrice($order_seat){
 			// $addit = OrderEventAdditional::where('order_id', '=', $order_seat->order_id)
 																// ->where('event_seat_id', '=', $order_seat->event_seat_id)->first();
@@ -98,8 +102,6 @@ use App\OrderEventAdditional;
 				$total+= $c_seat_price;
 			}
 
-			$shipping_fee = $this->GetShippingPrice($order);
-			$total += $shipping_fee;
 
 			return $total;
 		}
@@ -107,6 +109,11 @@ use App\OrderEventAdditional;
 		public function GenerateInvoiceNo($order){
 
 			return config('payment.order_invoice_prefix').substr('0000000000'.$order->id, -10);
+		}
+
+		public function GenerateOrderNo($order){
+
+			return env('ORDER_NO_PREFIX').substr('0000000000'.$order->id, -10);
 		}
 
 	}

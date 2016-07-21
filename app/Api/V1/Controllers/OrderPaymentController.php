@@ -20,9 +20,13 @@ class OrderPaymentController extends Controller
 		$orderServ = new OrderService();
 		$order = $orderServ->GetOrderByID($order_id);
 		
-		$total_price = $orderServ->CalculateOrderPrice($order);
+		$order_price = $orderServ->CalculateOrderPrice($order);
+		$shipping_price = $orderServ->GetShippingPrice($order);
 
-		$order->price = $total_price;
+		$order->order_no = $orderServ->GenerateOrderNo($order);
+		$order->order_price = $order_price;
+		$order->shipping_price = $shipping_price;
+		$order->total_price = $order_price+$shipping_price;
 		$order->invoice_no = $orderServ->GenerateInvoiceNo($order);
 		$order->save();
 
@@ -43,7 +47,8 @@ class OrderPaymentController extends Controller
 
 	public function response_front2c2p(Request $request){
 		$order_id = $request->input('order_id');
-		$order = Order::find($order_id);
+		$orderServ = new OrderService();
+		$order = $orderServ->GetOrderByOrderNo($order_id);
 
 		if(!is_null($order)){
 			$transServ = new PaymentTransactionService();
@@ -51,13 +56,13 @@ class OrderPaymentController extends Controller
 		}
 
 		if($request->input('payment_status') == '000'){
-			return redirect(env('FRONTEND_PAYMENT_SUCCESS').$order_id);
+			return redirect(env('FRONTEND_PAYMENT_SUCCESS').$order->id);
 		}
 		if($request->input('payment_status') == '003'){
-			return redirect(env('FRONTEND_PAYMENT_CANCEL').$order_id);
+			return redirect(env('FRONTEND_PAYMENT_CANCEL').$order->id);
 		}
 		if($request->input('payment_status') == '999'){
-			return redirect(env('FRONTEND_PAYMENT_ERROR').$order_id);
+			return redirect(env('FRONTEND_PAYMENT_ERROR').$order->id);
 		}
 
 	}
