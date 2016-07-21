@@ -38,7 +38,7 @@ class OrderPaymentController extends Controller
 		}		
 
 
-		if($order->payment_vendor_id == 1){
+		if($order->payment_vendor_id == 2){
 			
 			$pay2c2pServ = new Payment2c2pService();
 			$order = $pay2c2pServ->CreatePayment($order);
