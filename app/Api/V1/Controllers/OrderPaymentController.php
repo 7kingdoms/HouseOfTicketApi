@@ -17,17 +17,19 @@ class OrderPaymentController extends Controller
 		$payment_vendor_id = $request->input('payment_vendor_id');
 		$shipping_vendor_id = $request->input('shipping_vendor_id');
 
+
 		$orderServ = new OrderService();
 		$order = $orderServ->GetOrderByID($order_id);
 		
 		$order_price = $orderServ->CalculateOrderPrice($order);
-		$shipping_price = $orderServ->GetShippingPrice($order);
-
+		$shipping_price = $orderServ->GetShippingPrice($shipping_vendor_id);
 		$order->order_no = $orderServ->GenerateOrderNo($order);
+		$order->invoice_no = $orderServ->GenerateInvoiceNo($order);
+		$order->payment_vendor_id = $payment_vendor_id;
+		$order->shipping_vendor_id = $shipping_vendor_id;
 		$order->order_price = $order_price;
 		$order->shipping_price = $shipping_price;
 		$order->total_price = $order_price+$shipping_price;
-		$order->invoice_no = $orderServ->GenerateInvoiceNo($order);
 		$order->save();
 
 		if($orderServ->IsExpired($order))

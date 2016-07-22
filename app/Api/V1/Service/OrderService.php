@@ -4,6 +4,7 @@ namespace App\Api\V1\Service;
 use App\Order as ThisModel;
 use App\OrderSeat;
 use App\OrderEventAdditional;
+use App\ShippingVendor;
 
 	class OrderService{
     public function __construct(){
@@ -83,12 +84,13 @@ use App\OrderEventAdditional;
 			return $addit->additional->price;										
 		}
 
-		public function GetShippingPrice($order){
-			if(is_null($order->shipping_vendor))
+		public function GetShippingPrice($shipping_vendor_id){
+			$shipping_vendor = ShippingVendor::find($shipping_vendor_id);
+			if(is_null($shipping_vendor))
 			{
 				return 0;
 			}
-			return $order->shipping_vendor->price;
+			return $shipping_vendor->price;
 		}
 
 		public function CalculateOrderPrice($order){
@@ -112,12 +114,12 @@ use App\OrderEventAdditional;
 
 		public function GenerateInvoiceNo($order){
 
-			return config('payment.order_invoice_prefix').substr('0000000000'.$order->id, -10);
+			return config('payment.order_invoice_prefix').substr('000000000000'.$order->id, -12);
 		}
 
 		public function GenerateOrderNo($order){
 
-			return env('ORDER_NO_PREFIX').substr('0000000000'.$order->id, -10);
+			return env('ORDER_NO_PREFIX', '').date('ymd').substr('000000000000'.$order->id, -12);
 		}
 
 	}
