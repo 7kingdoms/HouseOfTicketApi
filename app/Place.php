@@ -5,14 +5,16 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class EventSeat extends Model
+class Place extends Model
 {
-    //use SoftDeletes;
+    use SoftDeletes;
 
     protected $dates = ['deleted_at'];
 
-    public function zone(){
-    	return $this->belongsTo('App\EventZone');
+
+    public function zones(){
+    	return $this->hasMany('App\PlaceZone');
     }
+
 
 }

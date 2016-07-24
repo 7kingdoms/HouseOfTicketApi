@@ -24,6 +24,9 @@ $api->version('v1', function ($api) {
 		$api->group(['middleware' => 'api.auth'],function($api){
 			$api->post('me','App\Api\V1\Controllers\AuthController@me');
 			$api->post('user/update','App\Api\V1\Controllers\AuthController@update');
+
+			$api->post('zone-seat/{id}' ,'App\Api\V1\Controllers\EventController@seatByZone');
+
 		});
 
 		$api->get('sendmail','App\Api\V1\Controllers\AuthController@sendmail');
@@ -35,6 +38,8 @@ $api->version('v1', function ($api) {
 	$api->get('location/amphur' ,'App\Api\V1\Controllers\LocationController@amphur');
 	$api->get('location/district' ,'App\Api\V1\Controllers\LocationController@district');
 	$api->get('location/zipcode' ,'App\Api\V1\Controllers\LocationController@zipcode');
+
+	$api->get('event/zone/{id}' ,'App\Api\V1\Controllers\EventController@zoneByPlace');
 
 
 	$api->post('ebiz/callback' ,'App\Api\V1\Controllers\VendorPaymentController@ebizCallback');

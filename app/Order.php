@@ -17,13 +17,17 @@ class Order extends Model
 
     }
     
-    public function seats(){
+    public function order_seats(){
     	return $this->hasMany('App\OrderSeat');
     }
 
 
     public function shipping_vendor(){
-    	return $this->belongsTo('App\ShippingVendor');
+        return $this->belongsTo('App\ShippingVendor');
+
+    }
+    public function payment_vendor(){
+    	return $this->belongsTo('App\PaymentVendor');
 
     }
 }
