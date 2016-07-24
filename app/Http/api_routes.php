@@ -26,6 +26,7 @@ $api->version('v1', function ($api) {
 			$api->post('user/update','App\Api\V1\Controllers\AuthController@update');
 
 			$api->post('zone-seat/{id}' ,'App\Api\V1\Controllers\EventController@seatByZone');
+			$api->post('event/booking' ,'App\Api\V1\Controllers\EventController@eventPackageBook');
 
 		});
 
