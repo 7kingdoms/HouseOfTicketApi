@@ -65,8 +65,8 @@ class EventController extends Controller
           }'
       ]);
       $resp = json_decode($response->getBody(),true);
-
-      return $this->ecode($resp['data']['orderID']);
+      return $resp;
+      //return $this->ecode($resp['data']['orderID']);
     }
 
     public function seatByZone(Request $req,$id){
