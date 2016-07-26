@@ -59,7 +59,8 @@ $api->version('v1', function ($api) {
 // 	]);
 // });
 
-		$api->post('order_payment' ,'App\Api\V1\Controllers\OrderPaymentController@submit');
+		$api->post('order/saveState' ,'App\Api\V1\Controllers\OrderPaymentController@saveState');
+		$api->post('order/payment' ,'App\Api\V1\Controllers\OrderPaymentController@submit');
 		$api->post('order_payment/response_front2c2p' ,'App\Api\V1\Controllers\OrderPaymentController@response_front2c2p');
 
 

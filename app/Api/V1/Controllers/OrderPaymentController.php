@@ -47,7 +47,9 @@ class OrderPaymentController extends Controller
 		$order = $orderServ->GetOrderByID($order_id);
 
 		if(!$order){
+			//todo: redirect to some where.
 			return "false";
+			//return redirect(env('FRONTEND_PAYMENT_EXPIRED'));
 		}
 
 		if($orderServ->IsExpired($order))
