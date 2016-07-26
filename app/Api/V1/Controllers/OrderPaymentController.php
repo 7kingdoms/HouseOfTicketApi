@@ -12,7 +12,8 @@ use App\Order;
 
 class OrderPaymentController extends Controller
 {
-	public function submit(Request $request){
+
+  public function saveState(Request $request){
 		$order_id = $request->input('order_id');
 		$payment_vendor_id = $request->input('payment_vendor_id');
 		$shipping_vendor_id = $request->input('shipping_vendor_id');
@@ -20,6 +21,11 @@ class OrderPaymentController extends Controller
 
 		$orderServ = new OrderService();
 		$order = $orderServ->GetOrderByID($order_id);
+
+		if(!$order){
+			return "false";
+		}
+
 		$order_price = $orderServ->CalculateOrderPrice($order);
 		$shipping_price = $orderServ->GetShippingPrice($shipping_vendor_id);
 		$order->order_no = $orderServ->GenerateOrderNo($order);
@@ -31,16 +37,29 @@ class OrderPaymentController extends Controller
 		$order->total_price = $order_price+$shipping_price;
 		$order->save();
 
+		return "true";
+	}
+
+	public function submit(Request $request){
+		$order_id = $request->input('order_id');
+
+		$orderServ = new OrderService();
+		$order = $orderServ->GetOrderByID($order_id);
+
+		if(!$order){
+			return "false";
+		}
+
 		if($orderServ->IsExpired($order))
 		{
 			$order = $orderServ->SetStatusExpired($order);
 
 			return redirect(env('FRONTEND_PAYMENT_EXPIRED'));
-		}		
+		}
 
 
 		if($order->payment_vendor_id == 2){
-			
+
 			$pay2c2pServ = new Payment2c2pService();
 			$order = $pay2c2pServ->CreatePayment($order);
 		}
