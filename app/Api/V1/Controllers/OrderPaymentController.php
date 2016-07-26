@@ -69,5 +69,4 @@ class OrderPaymentController extends Controller
 
 	}
 
-	}
 }
