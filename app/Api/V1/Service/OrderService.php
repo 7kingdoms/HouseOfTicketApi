@@ -114,12 +114,12 @@ use App\ShippingVendor;
 
 		public function GenerateInvoiceNo($order){
 
-			return env('ORDER_NO_PREFIX', '').config('payment.order_invoice_prefix').date('ymd').substr('000000000000'.$order->id, -12);
+			return env('ORDER_NO_PREFIX', '').config('payment.order_invoice_prefix').date('ymd').substr('000000000000'.$order->id, -10);
 		}
 
 		public function GenerateOrderNo($order){
 
-			return env('ORDER_NO_PREFIX', '').date('ymd').substr('000000000000'.$order->id, -12);
+			return env('ORDER_NO_PREFIX', '').date('ymd').substr('000000000000'.$order->id, -10);
 		}
 
 	}
