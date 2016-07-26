@@ -7,8 +7,7 @@ return [
 	  'secret' => '1JA8CNahHfzs', 
 	  'paymenturl' => 'https://demo2.2c2p.com/2C2PFrontEnd/RedirectV3/payment', 
 
-	  'prefix_orderid' => 't',
-
+	  'server_paymentgateway_api' => 'https://demo2.2c2p.com/2C2PFrontEnd/SecurePayment/PaymentAuth.aspx', 
 		], 
 
 		'order_status' => [
