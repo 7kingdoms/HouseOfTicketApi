@@ -264,15 +264,16 @@ class AuthController extends Controller
         }
     }
 
+
     public function reset(Request $request)
     {
         $credentials = $request->only(
-            'email', 'password', 'password_confirmation', 'token'
+          'password', 'password_confirmation', 'token'
         );
 
         $validator = Validator::make($credentials, [
             'token' => 'required',
-            'email' => 'required|email',
+
             'password' => 'required|confirmed|min:6',
         ]);
 
@@ -280,21 +281,27 @@ class AuthController extends Controller
             throw new ValidationHttpException($validator->errors()->all());
         }
 
-        $response = Password::reset($credentials, function ($user, $password) {
-            $user->password = $password;
-            $user->save();
-        });
+        $userReset = UserReset::where('token',$request->input('token'))->first();
 
-        switch ($response) {
-            case Password::PASSWORD_RESET:
-                if(Config::get('boilerplate.reset_token_release')) {
-                    return $this->login($request);
-                }
-                return $this->response->noContent();
+        if($userReset){
 
-            default:
-                return $this->response->error('could_not_reset_password', 500);
+          User::unguard();
+
+          $user = User::find($userReset->user_id);
+
+          $user->password = bcrypt($request->input('password'));
+          $user->save();
+          User::reguard();
+
+          $userReset->delete();
         }
+
+        return "success";
+
+
+
+
+
     }
 
     public function checkemail(Request $request){
