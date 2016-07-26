@@ -59,7 +59,7 @@ use App\ShippingVendor;
 
 
 		public function GetOrderByID($order_id){
-			return $this->model->with([ 'user', 'seats', 'seats.zone', 'shipping_vendor'])->where('id', '=', $order_id)->first();
+			return $this->model->with([ 'user', 'order_seats', 'order_seats.zone', 'shipping_vendor'])->where('id', '=', $order_id)->first();
 		}
 
 		public function GetOrderByOrderNo($order_no){

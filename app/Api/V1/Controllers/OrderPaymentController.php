@@ -20,7 +20,6 @@ class OrderPaymentController extends Controller
 
 		$orderServ = new OrderService();
 		$order = $orderServ->GetOrderByID($order_id);
-		
 		$order_price = $orderServ->CalculateOrderPrice($order);
 		$shipping_price = $orderServ->GetShippingPrice($shipping_vendor_id);
 		$order->order_no = $orderServ->GenerateOrderNo($order);
