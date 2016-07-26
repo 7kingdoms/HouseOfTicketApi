@@ -10,7 +10,6 @@ class Payment2c2pService{
 	  	$this->c2p_merchant_id = config('payment.2c2p.merchant_id');
 	  	$this->c2p_secret = config('payment.2c2p.secret');
 	  	$this->c2p_paymenturl = config('payment.2c2p.paymenturl');
-	  	$this->prefix_orderid = config('payment.2c2p.prefix_orderid');
 
    }
 

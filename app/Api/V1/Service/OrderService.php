@@ -59,7 +59,7 @@ use App\ShippingVendor;
 
 
 		public function GetOrderByID($order_id){
-			return $this->model->with([ 'user', 'seats', 'seats.zone', 'shipping_vendor'])->where('id', '=', $order_id)->first();
+			return $this->model->with([ 'user', 'order_seats', 'order_seats.zone', 'shipping_vendor'])->where('id', '=', $order_id)->first();
 		}
 
 		public function GetOrderByOrderNo($order_no){
@@ -95,7 +95,7 @@ use App\ShippingVendor;
 
 		public function CalculateOrderPrice($order){
 			$total = 0;
-			$order_seats = $order->seats;
+			$order_seats = $order->order_seats;
 			foreach($order_seats as $order_seat){
 				$c_seat_price = 0;
 				$zone_price = $order_seat->zone->price;
@@ -114,12 +114,12 @@ use App\ShippingVendor;
 
 		public function GenerateInvoiceNo($order){
 
-			return config('payment.order_invoice_prefix').substr('000000000000'.$order->id, -12);
+			return env('ORDER_NO_PREFIX', '').config('payment.order_invoice_prefix').date('ymd').substr('000000000000'.$order->id, -10);
 		}
 
 		public function GenerateOrderNo($order){
 
-			return env('ORDER_NO_PREFIX', '').date('ymd').substr('000000000000'.$order->id, -12);
+			return env('ORDER_NO_PREFIX', '').date('ymd').substr('000000000000'.$order->id, -10);
 		}
 
 	}
