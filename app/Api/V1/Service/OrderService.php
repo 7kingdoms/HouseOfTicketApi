@@ -95,7 +95,7 @@ use App\ShippingVendor;
 
 		public function CalculateOrderPrice($order){
 			$total = 0;
-			$order_seats = $order->seats;
+			$order_seats = $order->order_seats;
 			foreach($order_seats as $order_seat){
 				$c_seat_price = 0;
 				$zone_price = $order_seat->zone->price;
