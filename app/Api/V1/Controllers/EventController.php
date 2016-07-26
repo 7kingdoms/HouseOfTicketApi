@@ -51,6 +51,35 @@ class EventController extends Controller
                 ->where('place_id',$id)->get()->keyBy('id')->toArray();
     }
 
+    public function eventPackageSeatBook(Request $request){
+
+      $params = [
+         'headers' => ['authorization' => $request->header('authorization')]
+        ,'body' => '{
+              "data": {
+                  "packageID": '.$request->input('package_id').',
+                  "seatID": ['.$request->input('seat').']
+              }
+          }'
+      ];
+
+    //  return $params;
+      $client = new \GuzzleHttp\Client();
+      $response = $client->request('POST', env('MVAPI_URL') . 'book_seat/package',$params);
+      $resp = json_decode($response->getBody(),true);
+
+      if($resp['status'] == 1){
+        return array(
+           'status' => 1
+          ,'t'      => $this->ecode($resp['data']['orderID'])
+        );
+      }
+
+      return $resp;
+
+
+    }
+
     public function eventPackageBook(Request $request){
 
       $client = new \GuzzleHttp\Client();
@@ -65,8 +94,16 @@ class EventController extends Controller
           }'
       ]);
       $resp = json_decode($response->getBody(),true);
+      //return $resp;
+      if($resp['status'] == 1){
+        return array(
+           'status' => 1
+          ,'t'      => $this->ecode($resp['data']['orderID'])
+        );
+      }
+
       return $resp;
-      //return $this->ecode($resp['data']['orderID']);
+
     }
 
     public function seatByZone(Request $req,$id){
