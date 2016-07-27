@@ -93,6 +93,8 @@ class OrderPaymentController extends Controller
       if($reponse['status'] == 1){
       	$expire_time = $reponse['data']['order']['expire_time'];
       	$order_code = $reponse['data']['order']['order_code'];
+      	$order->boonterm_order_code = $order_code;
+      	$order->save();
 
       	$redirect_url = env('FRONTEND_PAYMENT_BOONTERM_SUCCESS').'?t='.$order_id_enc.'&code='.$order_code.'&expire='.date('Y-m-d h:i', strtotime($expire_time)).'&phone='.$order->user->phone.'&price='.$order->total_price;
       	
