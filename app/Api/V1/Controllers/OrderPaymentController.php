@@ -101,7 +101,7 @@ class OrderPaymentController extends Controller
                   "cust_name": "May",
                   "cust_lastname": "Jii",
                   "price": 100,
-                  "ref_id": "a000001",
+                  "ref_id": "a000002",
                   "valid_day": 0,
                   "valid_hour": 1
               }
