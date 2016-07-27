@@ -87,38 +87,21 @@ class OrderPaymentController extends Controller
 		}
 		else{
 			$payBoontermServ = new PaymentBoontermService();
-			$payBoontermServ->CreatePayment($order, $request);
+			$reponse = $payBoontermServ->CreatePayment($order, $request);
+			$order_id_enc = SimpleCrypt::ecode($order->id);
 
-   //    $params = [
-   //       'headers' => ['authorization' => 'Bearer '.$request->input('token')]
-   //      ,'body' => '{
-   //          "data": {
-   //              "tel": "0823433522",
-   //              "cust_name": "May",
-   //              "cust_lastname": "Jii",
-   //              "price": '.$order->total_price.',
-   //              "ref_id": "'.$order->order_no.'",
-   //              "valid_day": 0,
-   //              "valid_hour": 1
-   //          }
-   //      }'
-   //    ];
+      if($reponse['status'] == 1){
+      	$expire_time = $reponse['data']['order']['expire_time'];
+      	$order_code = $reponse['data']['order']['order_code'];
 
-   //    $params = [
-   //       'headers' => ['authorization' => 'Bearer '.$request->input('token')]
-   //      ,'body' => '{
-   //        "tel": "0823433522", "cust_name": "May", "cust_lastname": "Jii",  "ref_id": "D1607270000000254", "valid_day": 0, "valid_hour": 1 }'
-   //    ];
+      	$redirect_url = env('FRONTEND_PAYMENT_BOONTERM_SUCCESS').'?t='.$order_id_enc.'&code='.$order_code.'&expire='.date('Y-m-d h:i', strtotime($expire_time));
+      	
+      }
+      else{
+      	$redirect_url = env('FRONTEND_PAYMENT_BOONTERM_ERROR').'?t='.$order_id_enc;
+      }
+    	return redirect($redirect_url);
 
-			// $client = new \GuzzleHttp\Client();
-   //    $response = $client->request('POST', env('MVAPI_URL') . 'order', $params);
-
-
-
-   //    $resp = json_decode($response->getBody(),true);
-   //    echo $response->getBody();
-   //    print_r($resp);
-   //    print_r($params);
 		}
 	}
 
