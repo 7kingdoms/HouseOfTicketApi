@@ -26,11 +26,14 @@ use App\ShippingVendor;
 
 		public function SetStatusExpired($order){
 			$status = config('payment.order_status.expired');
-				$order->status = $status;
-				$order->save();
+			$order->status = $status;
+			$order->save();
 
-				OrderSeat::where('order_id', '=', $order->id)->update(['status' => config('payment.order_status.expired')]);
-				return $order;
+			OrderSeat::where('order_id', '=', $order->id)->update(['status' => config('payment.order_status.expired')]);
+
+			$this->UpdateStatusEventSeatByOrder($order);
+
+			return $order;
 		}
 
 		public function SetStatusPayment2c2p($order){
@@ -39,6 +42,8 @@ use App\ShippingVendor;
 				$order->save();
 
 				OrderSeat::where('order_id', '=', $order->id)->update(['status' => $status]);
+
+				$this->UpdateStatusEventSeatByOrder($order);
 				return $order;
 
 		}
@@ -52,9 +57,18 @@ use App\ShippingVendor;
 			$order->save();
 
 			OrderSeat::where('order_id', '=', $order->id)->update(['status' => $status]);
+
+			$this->UpdateStatusEventSeatByOrder($order);
 				
 			return $order;
 
+		}
+
+		private function UpdateStatusEventSeatByOrder($order, $status){
+			$seat_ids = OrderSeat::where('order_id', '=', $order->id)->lists('event_seat_id');
+			if(count($seat_ids) > 0){
+				EventSeat::whereIn('id', '=', $seat_ids)->update(['status' => $status]);
+			}
 		}
 
 

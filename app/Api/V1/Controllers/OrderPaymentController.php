@@ -92,7 +92,6 @@ class OrderPaymentController extends Controller
 			$order = $pay2c2pServ->CreatePayment($order);
 		}
 		else{
-			echo $request;
 			$client = new \GuzzleHttp\Client();
       $response = $client->request('POST', env('MVAPI_URL') . 'order',[
          'headers' => ['authorization' => $request->header('authorization')]
@@ -110,15 +109,7 @@ class OrderPaymentController extends Controller
       ]);
       $resp = json_decode($response->getBody(),true);			
 
-	    $path = public_path().'/temp/2c2bcallback.txt';
-	    $file = fopen($path,"a");
-	    fwrite($file,json_encode($response));  
-	    fwrite($file, "\n\n");
-
-	    fwrite($file, '----------------'."\n\n");
-
-	    fclose($file);
-
+      print_r($resp);
 		}
 	}
 

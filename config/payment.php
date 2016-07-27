@@ -10,9 +10,6 @@ return [
 	  'server_paymentgateway_api' => 'https://demo2.2c2p.com/2C2PFrontEnd/SecurePayment/PaymentAuth.aspx', 
 	], 
 
-	'boonterm' => [
-		'api_url' => env('BOONTERMAPI_URL'), 
-	], 
 
 	'order_status' => [
 		'booking' => 'B0', 
