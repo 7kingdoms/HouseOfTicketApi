@@ -95,7 +95,7 @@ class OrderPaymentController extends Controller
 		else{
 			$client = new \GuzzleHttp\Client();
       $response = $client->request('POST', env('MVAPI_URL') . 'order',[
-         'headers' => ['authorization' => $request->header('authorization')]
+         'headers' => ['authorization' => 'Bearer '.$request->input('token')]
         ,'body' => '{
               "data": {
                   "tel": "0823433522",
@@ -111,7 +111,7 @@ class OrderPaymentController extends Controller
 
       echo $response;
 
-      $resp = json_decode($response->getBody(),true);			
+      $resp = json_decode($response->getBody(),true);
       echo $response->getBody();
       print_r($resp);
 		}
