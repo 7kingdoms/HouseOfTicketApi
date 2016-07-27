@@ -41,6 +41,8 @@ class Payment2c2pService{
 
     $transServ = new PaymentTransactionService();
     $transServ->SaveRequestPayment($order, $data);
+    
+    $order = $orderServ->SetStatusPayment2c2p($order);
 
 		echo "<form action='".$this->c2p_paymenturl."' method='POST' name='authForm'>";
     echo "<input type='hidden' id='version' name='version' value='" .$data['version']. "'/>"; 
@@ -57,7 +59,6 @@ class Payment2c2pService{
    	echo "</script>";
 
 
-    $order = $orderServ->SetStatusPayment2c2p($order);
     // return $order;
 	}
 
