@@ -23,6 +23,10 @@ class PaymentBoontermService{
       $response = $client->request('POST', env('MVAPI_URL') . 'order', $params);
 
       $resp = json_decode($response->getBody(),true);
+
+      $transServ = new PaymentTransactionService();
+      $transServ->SaveRequestPayment($order, $resp);
+      
       return $resp;
 	}
 
