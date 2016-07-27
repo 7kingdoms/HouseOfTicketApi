@@ -2,12 +2,10 @@
 
 return [
 	'2c2p' => [
-		'version' => '6.9',
-	  'merchant_id' => '764764000000014',  
-	  'secret' => '1JA8CNahHfzs', 
-	  'paymenturl' => 'https://demo2.2c2p.com/2C2PFrontEnd/RedirectV3/payment', 
-
-	  'server_paymentgateway_api' => 'https://demo2.2c2p.com/2C2PFrontEnd/SecurePayment/PaymentAuth.aspx', 
+		'version' => env('2C2P_VERSION', '6.9'),
+	  'merchant_id' => env('2C2P_MERCHANTID', '764764000000014'),  
+	  'secret' => env('2C2P_SECRET', '1JA8CNahHfzs'), 
+	  'paymenturl' => env('2C2P_PAYMENTURL', 'https://demo2.2c2p.com/2C2PFrontEnd/RedirectV3/payment'), 
 	], 
 
 
