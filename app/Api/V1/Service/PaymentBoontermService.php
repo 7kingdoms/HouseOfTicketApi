@@ -2,6 +2,7 @@
 namespace App\Api\V1\Service;
 
 use App\Api\V1\Service\PaymentTransactionService;
+use App\Api\V1\Service\OrderService;
 
 class PaymentBoontermService{
 
@@ -27,6 +28,7 @@ class PaymentBoontermService{
       $transServ = new PaymentTransactionService();
       $transServ->SaveRequestPayment($order, $resp);
 
+      $orderServ = new OrderService();
       $order = $orderServ->SetStatusPaymentBoonterm($order);
 
       return $resp;
