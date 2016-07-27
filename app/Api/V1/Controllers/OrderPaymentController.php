@@ -63,7 +63,7 @@ class OrderPaymentController extends Controller
 
 		$user = JWTAuth::parseToken()->authenticate();
 
-    return $user;
+    return $user->id;
 		//
 		//
 		// if(!$order or $order->user_id != $user->id){
