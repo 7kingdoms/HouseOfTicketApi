@@ -39,9 +39,6 @@ use App\EventSeat;
 
 		public function SetStatusBooking($order){
 			$status = config('payment.order_status.booking');
-			if(is_null($order->paided_at)){
-				$order->paided_at = date('Y-m-d H:i:s');
-			}
 			$order->status = $status;
 			$order->save();
 
@@ -83,9 +80,6 @@ use App\EventSeat;
 
 		public function SetStatusCanceled($order){
 			$status = config('payment.order_status.canceled');
-			if(is_null($order->paided_at)){
-				$order->paided_at = date('Y-m-d H:i:s');
-			}
 			$order->status = $status;
 			$order->save();
 
