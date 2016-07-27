@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 
 use App\Api\V1\Service\OrderService;
 use App\Api\V1\Service\Payment2c2pService;
+use App\Api\V1\Service\PaymentBoontermService;
 use App\Api\V1\Service\PaymentTransactionService;
 use App\Order;
 
