@@ -2,6 +2,8 @@
 
 namespace App\Api\V1\Controllers;
 
+use JWTAuth;
+
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -10,11 +12,16 @@ use App\Api\V1\Service\Payment2c2pService;
 use App\Api\V1\Service\PaymentTransactionService;
 use App\Order;
 
+use App\Api\V1\Helpers\SimpleCrypt;
+
 class OrderPaymentController extends Controller
 {
 
   public function saveState(Request $request){
-		$order_id = $request->input('order_id');
+
+
+
+		$order_id = SimpleCrypt::decode($request->input('t'));
 		$payment_vendor_id = $request->input('payment_vendor_id');
 		$shipping_vendor_id = $request->input('shipping_vendor_id');
 
@@ -22,7 +29,9 @@ class OrderPaymentController extends Controller
 		$orderServ = new OrderService();
 		$order = $orderServ->GetOrderByID($order_id);
 
-		if(!$order){
+		$user = JWTAuth::parseToken()->authenticate();
+
+		if(!$order && $order->user_id != $user->id){
 			return "false";
 		}
 

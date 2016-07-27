@@ -30,20 +30,12 @@ use App\EventMasterSeat;
 use App\PlaceZone;
 use App\PlaceSeat;
 
+use App\Api\V1\Helpers\SimpleCrypt;
+
 class EventController extends Controller
 {
 
   use Helpers;
-
-    private function ecode($value){
-      $key = env('APP_KEY');
-      return base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $value, MCRYPT_MODE_CBC, md5(md5($key))));
-    }
-
-    private function decode($value){
-      $key = env('APP_KEY');
-      return rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode($value), MCRYPT_MODE_CBC, md5(md5($key))), "\0");
-    }
 
     public function zoneByPlace($id){
 
@@ -68,10 +60,11 @@ class EventController extends Controller
       $response = $client->request('POST', env('MVAPI_URL') . 'book_seat/package',$params);
       $resp = json_decode($response->getBody(),true);
 
-      if($resp['status'] == 1){
+
+      if(isset($resp['status']) and $resp['status'] == 1){
         return array(
            'status' => 1
-          ,'t'      => $this->ecode($resp['data']['orderID'])
+          ,'t'      => SimpleCrypt::ecode($resp['data']['orderID'])
         );
       }
 
@@ -98,7 +91,7 @@ class EventController extends Controller
       if($resp['status'] == 1){
         return array(
            'status' => 1
-          ,'t'      => $this->ecode($resp['data']['orderID'])
+          ,'t'      => SimpleCrypt::ecode($resp['data']['orderID'])
         );
       }
 
