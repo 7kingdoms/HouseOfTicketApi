@@ -36,7 +36,7 @@ use App\EventSeat;
 
 			return $order;
 		}
-		
+
 		public function SetStatusBooking($order){
 			$status = config('payment.order_status.booking');
 			if(is_null($order->paided_at)){
@@ -98,7 +98,9 @@ use App\EventSeat;
 		}
 
 		private function UpdateStatusEventSeatByOrder($order, $status){
+
 			$seat_ids = OrderSeat::where('order_id', '=', $order->id)->lists('event_seat_id');
+			print($seat_ids);exit;
 			if(count($seat_ids) > 0){
 				EventSeat::whereIn('id', '=', $seat_ids)->update(['status' => $status, 'action_at' => date('Y-m-d H:i:s')]);
 			}
