@@ -109,7 +109,7 @@ class OrderPaymentController extends Controller
       ]);
       $resp = json_decode($response->getBody(),true);			
 
-      // print_r($resp);
+      print_r($resp);
 		}
 	}
 
