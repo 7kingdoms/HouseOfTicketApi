@@ -92,9 +92,9 @@ class OrderPaymentController extends Controller
 			$order = $pay2c2pServ->CreatePayment($order);
 		}
 		else{
+			echo $request;
 			$client = new \GuzzleHttp\Client();
-			$api_url = config('payment.boonterm.api_url');
-      $response = $client->request('POST', $api_url . 'order',[
+      $response = $client->request('POST', env('MVAPI_URL') . 'order',[
          'headers' => ['authorization' => $request->header('authorization')]
         ,'body' => '{
               "data": {
