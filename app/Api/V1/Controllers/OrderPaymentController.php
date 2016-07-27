@@ -61,7 +61,9 @@ class OrderPaymentController extends Controller
 		$orderServ = new OrderService();
 		$order = $orderServ->GetOrderByID($order_id);
 
-		// $user = JWTAuth::parseToken()->authenticate();
+		$user = JWTAuth::parseToken()->authenticate();
+
+    return $user;
 		//
 		//
 		// if(!$order or $order->user_id != $user->id){
@@ -132,7 +134,7 @@ class OrderPaymentController extends Controller
     $data = '{"tel":"0823433522","cust_name":"May","cust_lastname":"Jii"}';
     $params = [
        'headers' => ['authorization' => $request->header('authorization')]
-      
+
     ];
     echo json_encode($params);
     $client = new \GuzzleHttp\Client();
