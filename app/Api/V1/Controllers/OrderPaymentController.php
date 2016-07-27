@@ -82,8 +82,9 @@ class OrderPaymentController extends Controller
 		if($orderServ->IsExpired($order))
 		{
 			$order = $orderServ->SetStatusExpired($order);
+			$order_id_enc = SimpleCrypt::ecode($order->id);
 
-			return redirect(env('FRONTEND_PAYMENT_2C2P_EXPIRED'));
+			return redirect(env('FRONTEND_PAYMENT_2C2P_EXPIRED').'?t='.$order_id_enc);
 		}
 
 		if($order->payment_vendor_id == 2){
@@ -109,6 +110,8 @@ class OrderPaymentController extends Controller
           }'
       ]);
 
+      echo $response;
+
       $resp = json_decode($response->getBody(),true);			
       echo $response->getBody();
       print_r($resp);
@@ -125,14 +128,16 @@ class OrderPaymentController extends Controller
 			$transServ->SaveResponseFrontPayment($order, $request->all());
 		}
 
+		$order_id_enc = SimpleCrypt::ecode($order->id);
+
 		if($request->input('payment_status') == '000'){
-			return redirect(env('FRONTEND_PAYMENT_2C2P_SUCCESS'));
+			return redirect(env('FRONTEND_PAYMENT_2C2P_SUCCESS').'?t='.$order_id_enc);
 		}
 		if($request->input('payment_status') == '003'){
-			return redirect(env('FRONTEND_PAYMENT_2C2P_CANCEL'));
+			return redirect(env('FRONTEND_PAYMENT_2C2P_CANCEL').'?t='.$order_id_enc);
 		}
 		if($request->input('payment_status') == '999'){
-			return redirect(env('FRONTEND_PAYMENT_2C2P_ERROR'));
+			return redirect(env('FRONTEND_PAYMENT_2C2P_ERROR').'?t='.$order_id_enc);
 		}
 
 	}
