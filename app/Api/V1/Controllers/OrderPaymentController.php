@@ -83,7 +83,7 @@ class OrderPaymentController extends Controller
 		{
 			$order = $orderServ->SetStatusExpired($order);
 
-			return redirect(env('FRONTEND_PAYMENT_EXPIRED'));
+			return redirect(env('FRONTEND_PAYMENT_2C2P_EXPIRED'));
 		}
 
 		if($order->payment_vendor_id == 2){
@@ -124,13 +124,13 @@ class OrderPaymentController extends Controller
 		}
 
 		if($request->input('payment_status') == '000'){
-			return redirect(env('FRONTEND_PAYMENT_SUCCESS'));
+			return redirect(env('FRONTEND_PAYMENT_2C2P_SUCCESS'));
 		}
 		if($request->input('payment_status') == '003'){
-			return redirect(env('FRONTEND_PAYMENT_CANCEL'));
+			return redirect(env('FRONTEND_PAYMENT_2C2P_CANCEL'));
 		}
 		if($request->input('payment_status') == '999'){
-			return redirect(env('FRONTEND_PAYMENT_ERROR'));
+			return redirect(env('FRONTEND_PAYMENT_2C2P_ERROR'));
 		}
 
 	}
