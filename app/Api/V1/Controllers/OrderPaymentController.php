@@ -61,16 +61,6 @@ class OrderPaymentController extends Controller
 		$orderServ = new OrderService();
 		$order = $orderServ->GetOrderByID($order_id);
 
-    //return $request->all();
-
-		$user = JWTAuth::parseToken()->authenticate();
-
-    return $user;
-		//
-		//
-		// if(!$order or $order->user_id != $user->id){
-		// 	return "false";
-		// }
 
 		$order_price = $orderServ->CalculateOrderPrice($order);
 		$shipping_price = $orderServ->GetShippingPrice($shipping_vendor_id);
