@@ -26,7 +26,9 @@ class PaymentBoontermService{
 
       $transServ = new PaymentTransactionService();
       $transServ->SaveRequestPayment($order, $resp);
-      
+
+      $order = $orderServ->SetStatusPaymentBoonterm($order);
+
       return $resp;
 	}
 

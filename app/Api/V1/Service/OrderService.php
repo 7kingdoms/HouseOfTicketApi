@@ -62,6 +62,18 @@ use App\EventSeat;
 
 		}
 
+		public function SetStatusPaymentBoonterm($order){
+			$status = config('payment.order_status.payment_boonterm');
+				$order->status = $status;
+				$order->save();
+
+				OrderSeat::where('order_id', '=', $order->id)->update(['status' => $status]);
+
+			$this->UpdateStatusEventSeatByOrder($order, $status);
+				return $order;
+
+		}
+
 		public function SetStatusPaided($order){
 			$status = config('payment.order_status.paided');
 			if(is_null($order->paided_at)){
