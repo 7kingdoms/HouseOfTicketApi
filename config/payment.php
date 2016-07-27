@@ -8,15 +8,19 @@ return [
 	  'paymenturl' => 'https://demo2.2c2p.com/2C2PFrontEnd/RedirectV3/payment', 
 
 	  'server_paymentgateway_api' => 'https://demo2.2c2p.com/2C2PFrontEnd/SecurePayment/PaymentAuth.aspx', 
-		], 
+	], 
 
-		'order_status' => [
-			'booking' => 'B0', 
-			'payment_boonterm' => 'P0', 
-			'payment_2c2p' => 'P1', 
-			'paided' => '01', 
-			'expired' => 'OE', 
-		],
+	'boonterm' => [
+		'api_url' => env('BOONTERMAPI_URL'), 
+	], 
+
+	'order_status' => [
+		'booking' => 'B0', 
+		'payment_boonterm' => 'P0', 
+		'payment_2c2p' => 'P1', 
+		'paided' => '01', 
+		'expired' => 'OE', 
+	],
 
 
 	'order_expired_in' => '10 minute',

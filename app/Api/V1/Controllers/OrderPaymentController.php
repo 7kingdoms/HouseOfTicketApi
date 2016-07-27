@@ -86,11 +86,39 @@ class OrderPaymentController extends Controller
 			return redirect(env('FRONTEND_PAYMENT_EXPIRED'));
 		}
 
-
 		if($order->payment_vendor_id == 2){
 
 			$pay2c2pServ = new Payment2c2pService();
 			$order = $pay2c2pServ->CreatePayment($order);
+		}
+		else{
+			$client = new \GuzzleHttp\Client();
+			$api_url = config('payment.boonterm.api_url');
+      $response = $client->request('POST', $api_url . 'order',[
+         'headers' => ['authorization' => $request->header('authorization')]
+        ,'body' => '{
+              "data": {
+                  "tel": "0823433522",
+                  "cust_name": "May",
+                  "cust_lastname": "Jii",
+                  "price": 100,
+                  "ref_id": "a000001",
+                  "valid_day": 0,
+                  "valid_hour": 1
+              }
+          }'
+      ]);
+      $resp = json_decode($response->getBody(),true);			
+
+	    $path = public_path().'/temp/2c2bcallback.txt';
+	    $file = fopen($path,"a");
+	    fwrite($file,json_encode($response));  
+	    fwrite($file, "\n\n");
+
+	    fwrite($file, '----------------'."\n\n");
+
+	    fclose($file);
+
 		}
 	}
 
