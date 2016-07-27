@@ -107,6 +107,8 @@ class OrderPaymentController extends Controller
               }
           }'
       ]);
+
+      echo $order.'<br><br>';
       $resp = json_decode($response->getBody(),true);			
       echo $response->getBody();
       print_r($resp);
