@@ -100,15 +100,15 @@ class OrderPaymentController extends Controller
                   "tel": "0823433522",
                   "cust_name": "May",
                   "cust_lastname": "Jii",
-                  "price": 100,
-                  "ref_id": "a000002",
+                  "price": '.$order->total_price.',
+                  "ref_id": "'.$order->order_no.'",
                   "valid_day": 0,
                   "valid_hour": 1
               }
           }'
       ]);
       $resp = json_decode($response->getBody(),true);			
-
+      echo $response->getBody();
       print_r($resp);
 		}
 	}
