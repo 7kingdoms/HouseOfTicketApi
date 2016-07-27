@@ -63,7 +63,7 @@ $api->version('v1', function ($api) {
 
 
 		$api->post('order/payment' ,'App\Api\V1\Controllers\OrderPaymentController@submit');
-		$api->post('order_payment/response_front2c2p' ,'App\Api\V1\Controllers\OrderPaymentController@response_front2c2p');
+		$api->post('order/payment/response_front2c2p' ,'App\Api\V1\Controllers\OrderPaymentController@response_front2c2p');
 
 
 	//
