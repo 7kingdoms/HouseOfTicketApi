@@ -95,8 +95,8 @@ use App\EventSeat;
 
 			$seat_ids = OrderSeat::where('order_id', '=', $order->id)->lists('event_seat_id');
 			if(count($seat_ids) > 0){
-			echo $order->id.'<br><br>';
-			print($seat_ids);exit;
+			// echo $order->id.'<br><br>';
+			// print($seat_ids);exit;
 				EventSeat::whereIn('id', $seat_ids)->update(['status' => $status, 'action_at' => date('Y-m-d H:i:s')]);
 			}
 		}
