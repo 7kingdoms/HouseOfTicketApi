@@ -55,7 +55,7 @@ class Payment2c2pService{
     echo "</form>";
 
     echo "<script language='JavaScript'>";
-    // echo "document.authForm.submit();";     //submit form to 2c2p Redirect 
+    echo "document.authForm.submit();";     //submit form to 2c2p Redirect 
    	echo "</script>";
 
 
