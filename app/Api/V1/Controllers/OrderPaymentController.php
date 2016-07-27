@@ -110,6 +110,12 @@ class OrderPaymentController extends Controller
         }'
       ];
 
+      $params = [
+         'headers' => ['authorization' => 'Bearer '.$request->input('token')]
+        ,'body' => '{
+          "tel": "0823433522", "cust_name": "May", "cust_lastname": "Jii",  "ref_id": "D1607270000000254", "valid_day": 0, "valid_hour": 1 }'
+      ];
+
 			$client = new \GuzzleHttp\Client();
       $response = $client->request('POST', env('MVAPI_URL') . 'order', $params);
 
@@ -121,6 +127,22 @@ class OrderPaymentController extends Controller
       print_r($params);
 		}
 	}
+
+  public function testBoonterm(Request $request){
+    $data = '{"tel":"0823433522","cust_name":"May","cust_lastname":"Jii"}';
+    $params = [
+       'headers' => ['authorization' => $request->header('authorization')]
+      
+    ];
+    echo json_encode($params);
+    $client = new \GuzzleHttp\Client();
+    $response = $client->request('GET', env('MVAPI_URL') . 'order/3242342342', $params);
+
+    $resp = json_decode($response->getBody(),true);
+    echo $response->getBody();
+    print_r($resp);
+
+  }
 
 	public function response_front2c2p(Request $request){
 		$order_id = $request->input('order_id');
