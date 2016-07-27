@@ -58,7 +58,7 @@ class Payment2c2pService{
 
 
     $order = $orderServ->SetStatusPayment2c2p($order);
-    return $order;
+    // return $order;
 	}
 
 	private function GenerateAmountStr($amount){
