@@ -103,7 +103,7 @@ use App\EventSeat;
 			// echo $order->id.'<br><br>';
 			// print($seat_ids);exit;
 			if(count($seat_ids) > 0){
-				EventSeat::whereIn('id', '=', $seat_ids)->update(['status' => $status, 'action_at' => date('Y-m-d H:i:s')]);
+				EventSeat::whereIn('id', $seat_ids)->update(['status' => $status, 'action_at' => date('Y-m-d H:i:s')]);
 			}
 		}
 
