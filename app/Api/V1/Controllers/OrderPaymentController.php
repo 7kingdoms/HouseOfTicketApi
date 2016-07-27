@@ -93,27 +93,32 @@ class OrderPaymentController extends Controller
 			$order = $pay2c2pServ->CreatePayment($order);
 		}
 		else{
-			$client = new \GuzzleHttp\Client();
-      $response = $client->request('POST', env('MVAPI_URL') . 'order',[
+
+
+      $params = [
          'headers' => ['authorization' => 'Bearer '.$request->input('token')]
         ,'body' => '{
-              "data": {
-                  "tel": "0823433522",
-                  "cust_name": "May",
-                  "cust_lastname": "Jii",
-                  "price": '.$order->total_price.',
-                  "ref_id": "'.$order->order_no.'",
-                  "valid_day": 0,
-                  "valid_hour": 1
-              }
-          }'
-      ]);
+            "data": {
+                "tel": "0823433522",
+                "cust_name": "May",
+                "cust_lastname": "Jii",
+                "price": '.$order->total_price.',
+                "ref_id": "'.$order->order_no.'",
+                "valid_day": 0,
+                "valid_hour": 1
+            }
+        }'
+      ];
+
+			$client = new \GuzzleHttp\Client();
+      $response = $client->request('POST', env('MVAPI_URL') . 'order', $params);
 
 
 
       $resp = json_decode($response->getBody(),true);
       echo $response->getBody();
       print_r($resp);
+      print_r($params);
 		}
 	}
 
