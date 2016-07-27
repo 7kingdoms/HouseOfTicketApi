@@ -124,13 +124,13 @@ class OrderPaymentController extends Controller
 		}
 
 		if($request->input('payment_status') == '000'){
-			return redirect(env('FRONTEND_PAYMENT_SUCCESS').$order->id);
+			return redirect(env('FRONTEND_PAYMENT_SUCCESS'));
 		}
 		if($request->input('payment_status') == '003'){
-			return redirect(env('FRONTEND_PAYMENT_CANCEL').$order->id);
+			return redirect(env('FRONTEND_PAYMENT_CANCEL'));
 		}
 		if($request->input('payment_status') == '999'){
-			return redirect(env('FRONTEND_PAYMENT_ERROR').$order->id);
+			return redirect(env('FRONTEND_PAYMENT_ERROR'));
 		}
 
 	}

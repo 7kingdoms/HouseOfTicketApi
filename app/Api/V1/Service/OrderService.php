@@ -5,6 +5,7 @@ use App\Order as ThisModel;
 use App\OrderSeat;
 use App\OrderEventAdditional;
 use App\ShippingVendor;
+use App\EventSeat;
 
 	class OrderService{
     public function __construct(){
@@ -31,9 +32,25 @@ use App\ShippingVendor;
 
 			OrderSeat::where('order_id', '=', $order->id)->update(['status' => config('payment.order_status.expired')]);
 
-			$this->UpdateStatusEventSeatByOrder($order);
+			$this->UpdateStatusEventSeatByOrder($order, $status);
 
 			return $order;
+		}
+		
+		public function SetStatusBooking($order){
+			$status = config('payment.order_status.booking');
+			if(is_null($order->paided_at)){
+				$order->paided_at = date('Y-m-d H:i:s');
+			}
+			$order->status = $status;
+			$order->save();
+
+			OrderSeat::where('order_id', '=', $order->id)->update(['status' => $status]);
+
+			$this->UpdateStatusEventSeatByOrder($order, $status);
+				
+			return $order;
+
 		}
 
 		public function SetStatusPayment2c2p($order){
@@ -43,7 +60,7 @@ use App\ShippingVendor;
 
 				OrderSeat::where('order_id', '=', $order->id)->update(['status' => $status]);
 
-				$this->UpdateStatusEventSeatByOrder($order);
+			$this->UpdateStatusEventSeatByOrder($order, $status);
 				return $order;
 
 		}
@@ -58,7 +75,23 @@ use App\ShippingVendor;
 
 			OrderSeat::where('order_id', '=', $order->id)->update(['status' => $status]);
 
-			$this->UpdateStatusEventSeatByOrder($order);
+			$this->UpdateStatusEventSeatByOrder($order, $status);
+				
+			return $order;
+
+		}
+
+		public function SetStatusCanceled($order){
+			$status = config('payment.order_status.canceled');
+			if(is_null($order->paided_at)){
+				$order->paided_at = date('Y-m-d H:i:s');
+			}
+			$order->status = $status;
+			$order->save();
+
+			OrderSeat::where('order_id', '=', $order->id)->update(['status' => $status]);
+
+			$this->UpdateStatusEventSeatByOrder($order, $status);
 				
 			return $order;
 
@@ -67,7 +100,7 @@ use App\ShippingVendor;
 		private function UpdateStatusEventSeatByOrder($order, $status){
 			$seat_ids = OrderSeat::where('order_id', '=', $order->id)->lists('event_seat_id');
 			if(count($seat_ids) > 0){
-				EventSeat::whereIn('id', '=', $seat_ids)->update(['status' => $status]);
+				EventSeat::whereIn('id', '=', $seat_ids)->update(['status' => $status, 'action_at' => date('Y-m-d H:i:s')]);
 			}
 		}
 
