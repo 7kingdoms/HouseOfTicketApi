@@ -5,7 +5,7 @@ use App\Api\V1\Service\PaymentTransactionService;
 
 class PaymentBoontermService{
 
-	public function CreatePayment($order){
+	public function CreatePayment($order, $request){
       // $params = [
       //    'headers' => ['authorization' => 'Bearer '.$request->input('token')]
       //   ,'body' => '{

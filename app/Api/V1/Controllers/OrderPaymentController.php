@@ -52,7 +52,6 @@ class OrderPaymentController extends Controller
 	}
 
 	public function submit(Request $request){
-
 		$order_id = SimpleCrypt::decode($request->input('t'));
 
 		$payment_vendor_id = $request->input('payment_vendor_id');
@@ -61,7 +60,6 @@ class OrderPaymentController extends Controller
 
 		$orderServ = new OrderService();
 		$order = $orderServ->GetOrderByID($order_id);
-
 
 		$order_price = $orderServ->CalculateOrderPrice($order);
 		$shipping_price = $orderServ->GetShippingPrice($shipping_vendor_id);
@@ -89,7 +87,7 @@ class OrderPaymentController extends Controller
 		}
 		else{
 			$payBoontermServ = new PaymentBoontermService();
-			$payBoontermServ->CreatePayment($order);
+			$payBoontermServ->CreatePayment($order, $request);
 
    //    $params = [
    //       'headers' => ['authorization' => 'Bearer '.$request->input('token')]
