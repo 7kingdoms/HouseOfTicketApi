@@ -93,7 +93,6 @@ class OrderPaymentController extends Controller
 			$order = $pay2c2pServ->CreatePayment($order);
 		}
 		else{
-      echo $order.'<br><br>';
 			$client = new \GuzzleHttp\Client();
       $response = $client->request('POST', env('MVAPI_URL') . 'order',[
          'headers' => ['authorization' => $request->header('authorization')]
