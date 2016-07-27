@@ -22,6 +22,7 @@ class OrderPaymentController extends Controller
 
 
 		$order_id = SimpleCrypt::decode($request->input('t'));
+
 		$payment_vendor_id = $request->input('payment_vendor_id');
 		$shipping_vendor_id = $request->input('shipping_vendor_id');
 
@@ -31,7 +32,8 @@ class OrderPaymentController extends Controller
 
 		$user = JWTAuth::parseToken()->authenticate();
 
-		if(!$order && $order->user_id != $user->id){
+
+		if(!$order or $order->user_id != $user->id){
 			return "false";
 		}
 
@@ -46,20 +48,36 @@ class OrderPaymentController extends Controller
 		$order->total_price = $order_price+$shipping_price;
 		$order->save();
 
-		return "true";
 	}
 
 	public function submit(Request $request){
-		$order_id = $request->input('order_id');
+
+		$order_id = SimpleCrypt::decode($request->input('t'));
+
+		$payment_vendor_id = $request->input('payment_vendor_id');
+		$shipping_vendor_id = $request->input('shipping_vendor_id');
+
 
 		$orderServ = new OrderService();
 		$order = $orderServ->GetOrderByID($order_id);
 
-		if(!$order){
-			//todo: redirect to some where.
+		$user = JWTAuth::parseToken()->authenticate();
+
+
+		if(!$order or $order->user_id != $user->id){
 			return "false";
-			//return redirect(env('FRONTEND_PAYMENT_EXPIRED'));
 		}
+
+		$order_price = $orderServ->CalculateOrderPrice($order);
+		$shipping_price = $orderServ->GetShippingPrice($shipping_vendor_id);
+		$order->order_no = $orderServ->GenerateOrderNo($order);
+		$order->invoice_no = $orderServ->GenerateInvoiceNo($order);
+		$order->payment_vendor_id = $payment_vendor_id;
+		$order->shipping_vendor_id = $shipping_vendor_id;
+		$order->order_price = $order_price;
+		$order->shipping_price = $shipping_price;
+		$order->total_price = $order_price+$shipping_price;
+		$order->save();
 
 		if($orderServ->IsExpired($order))
 		{

@@ -29,6 +29,8 @@ $api->version('v1', function ($api) {
 			$api->post('event/booking/packageZone' ,'App\Api\V1\Controllers\EventController@eventPackageBook');
 			$api->post('event/booking/packageSeat' ,'App\Api\V1\Controllers\EventController@eventPackageSeatBook');
 
+			$api->post('order/saveState' ,'App\Api\V1\Controllers\OrderPaymentController@saveState');
+
 		});
 
 		$api->get('sendmail','App\Api\V1\Controllers\AuthController@sendmail');
@@ -48,9 +50,9 @@ $api->version('v1', function ($api) {
 	$api->get('ebiz/view_callback' ,'App\Api\V1\Controllers\VendorPaymentController@ebizViewCallback');
 
 
-	$api->post('payment2c2b/submit' ,'App\Api\V1\Controllers\Payment2c2bController@submit');
-	$api->post('payment2c2b/success' ,'App\Api\V1\Controllers\Payment2c2bController@success');
-	$api->post('payment2c2b/callback' ,'App\Api\V1\Controllers\Payment2c2bController@callback');
+	// $api->post('payment2c2b/submit' ,'App\Api\V1\Controllers\Payment2c2bController@submit');
+	// $api->post('payment2c2b/success' ,'App\Api\V1\Controllers\Payment2c2bController@success');
+	// $api->post('payment2c2b/callback' ,'App\Api\V1\Controllers\Payment2c2bController@callback');
 
 
 // 	$app->group(['prefix' => 'payment', 'namespace' => 'App\Http\Controllers'], function () use ($app) {
@@ -59,7 +61,7 @@ $api->version('v1', function ($api) {
 // 	]);
 // });
 
-		$api->post('order/saveState' ,'App\Api\V1\Controllers\OrderPaymentController@saveState');
+
 		$api->post('order/payment' ,'App\Api\V1\Controllers\OrderPaymentController@submit');
 		$api->post('order_payment/response_front2c2p' ,'App\Api\V1\Controllers\OrderPaymentController@response_front2c2p');
 
