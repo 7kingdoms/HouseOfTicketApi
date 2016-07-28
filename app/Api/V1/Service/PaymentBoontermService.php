@@ -7,9 +7,6 @@ use App\Api\V1\Service\OrderService;
 class PaymentBoontermService{
 
 	public function CreatePayment($order, $request){
-    $valid_day = config('payment.boonterm.valid_day');
-    $valid_hour = config('payment.boonterm.valid_hour');
-
 		// echo $order->user->name;
       $params = [
          'headers' => ['authorization' => 'Bearer '.$request->input('token')], 
@@ -18,8 +15,8 @@ class PaymentBoontermService{
           	"cust_name": "'.$order->user->name.'", 
           	"cust_lastname": "'. $order->user->surname.'",  
           	"ref_id": "'.$order->order_no.'", 
-          	"valid_day": '.$valid_day.', 
-          	"valid_hour": '.$valid_hour.'
+          	"valid_day": 0, 
+          	"valid_hour": 1 
           }'
       ];
 
@@ -27,7 +24,7 @@ class PaymentBoontermService{
       $transServ->SaveRequestPayment($order, $params);
 
 			$client = new \GuzzleHttp\Client();
-      $response = $client->request('POST', config('payment.boonterm.api_url') . 'order', $params);
+      $response = $client->request('POST', env('MVAPI_URL') . 'order', $params);
 
       $resp = json_decode($response->getBody(),true);
 
