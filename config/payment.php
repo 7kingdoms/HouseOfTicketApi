@@ -20,7 +20,8 @@ return [
 	],
 
 
-	'order_expired_in' => '10 minute',
+	// 'order_expired_in' => '10 minute',
+	'order_expired_minute' => '10',
 	'order_invoice_prefix' => 'INV',
 
 	

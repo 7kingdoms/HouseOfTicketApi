@@ -17,7 +17,7 @@ use App\EventSeat;
 			if($order->status == 'OE'){
 				return true;
 			}
-			$expired = date('Y-m-d H:i:s', strtotime('+'.config('payment.order_expired_in'), strtotime($order->created_at)));
+			$expired = date('Y-m-d H:i:s', strtotime('+'.config('payment.order_expired_minute').' minute', strtotime($order->created_at)));
 			if($expired < date('Y-m-d H:i:s')){
 
 				return true;

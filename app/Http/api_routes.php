@@ -70,6 +70,10 @@ $api->version('v1', function ($api) {
 		$api->post('order/payment' ,'App\Api\V1\Controllers\OrderPaymentController@submit');
 		$api->post('order/payment/response_front2c2p' ,'App\Api\V1\Controllers\OrderPaymentController@response_front2c2p');
 
+		$api->post('user/order_history/booking' ,'App\Api\V1\Controllers\UserController@getOrderHistoryBooking');
+		$api->post('user/order_history/payment' ,'App\Api\V1\Controllers\UserController@getOrderPayment');
+
+
 
 	//
 	// // example of protected route
