@@ -20,13 +20,15 @@ class PaymentBoontermService{
           }'
       ];
 
+      $transServ = new PaymentTransactionService();
+      $transServ->SaveRequestPayment($order, $params);
+
 			$client = new \GuzzleHttp\Client();
       $response = $client->request('POST', env('MVAPI_URL') . 'order', $params);
 
       $resp = json_decode($response->getBody(),true);
 
-      $transServ = new PaymentTransactionService();
-      $transServ->SaveRequestPayment($order, $resp);
+      $transServ->SaveResponseFrontPayment($order, $resp);
 
       $orderServ = new OrderService();
       $order = $orderServ->SetStatusPaymentBoonterm($order);
