@@ -30,6 +30,8 @@ use App\EventMasterSeat;
 use App\PlaceZone;
 use App\PlaceSeat;
 
+use App\ProvinceHotDb;
+
 use App\Api\V1\Helpers\SimpleCrypt;
 
 class EventController extends Controller
@@ -37,10 +39,39 @@ class EventController extends Controller
 
   use Helpers;
 
-    public function zoneByPlace($id){
+    public function hotProvince(){
 
-      return EventMasterZone::select(['id','can_select','name','data_obj','data_seat_obj','price'])
+      $hotprovinces = ProvinceHotDb::all();
+
+      $result = array();
+
+      foreach($hotprovinces as $item){
+        $result[$item->province][] = $item;
+      }
+
+      return $result;
+    }
+    public function zoneByPlace(Request $request,$id){
+
+      $params = [
+         'headers' => ['authorization' => $request->header('authorization')]
+      ];
+
+    //  return $params;
+      $client = new \GuzzleHttp\Client();
+      $response = $client->request('GET', env('MVAPI_URL') . 'get_zone_available/package/' . $id,$params);
+      $resp = json_decode($response->getBody(),true);
+
+      $allZone = EventMasterZone::select(['id','can_select','name','data_obj','data_seat_obj','price'])
                 ->where('place_id',$id)->get()->keyBy('id')->toArray();
+
+      $result = array();
+
+      foreach($resp['data']['zones'] as $item){
+        $result[$item['zoneID']] = $allZone[$item['zoneID']];
+      }
+
+      return $result;
     }
 
     public function eventPackageSeatBook(Request $request){

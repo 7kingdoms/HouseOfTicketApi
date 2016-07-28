@@ -30,7 +30,7 @@ $api->version('v1', function ($api) {
 			$api->post('event/booking/packageSeat' ,'App\Api\V1\Controllers\EventController@eventPackageSeatBook');
 
 			$api->post('order/saveState' ,'App\Api\V1\Controllers\OrderPaymentController@saveState');
-
+			$api->post('event/zone/{id}' ,'App\Api\V1\Controllers\EventController@zoneByPlace');
 
 
 		});
@@ -45,7 +45,9 @@ $api->version('v1', function ($api) {
 	$api->get('location/district' ,'App\Api\V1\Controllers\LocationController@district');
 	$api->get('location/zipcode' ,'App\Api\V1\Controllers\LocationController@zipcode');
 
-	$api->get('event/zone/{id}' ,'App\Api\V1\Controllers\EventController@zoneByPlace');
+	$api->get('event/hotprovince' ,'App\Api\V1\Controllers\EventController@hotProvince');
+
+
 
 
 	$api->post('ebiz/callback' ,'App\Api\V1\Controllers\VendorPaymentController@ebizCallback');
