@@ -8,6 +8,12 @@ return [
 	  'paymenturl' => env('2C2P_PAYMENTURL', 'https://demo2.2c2p.com/2C2PFrontEnd/RedirectV3/payment'), 
 	], 
 
+	'boonterm' => [
+		'api_url' => env('MVAPI_URL', 'http://dev.houseofticket.com:8080/'), 
+		'valid_day' => env('BOONTERM_API_VALID_DAY', 0), 
+		'valid_hour' => env('BOONTERM_API_VALID_HOUR', 3), 
+	], 
+
 
 	'order_status' => [
 		'booking' => 'B0', 
