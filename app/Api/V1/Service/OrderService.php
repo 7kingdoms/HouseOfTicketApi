@@ -30,9 +30,9 @@ use App\EventSeat;
 			$order->status = $status;
 			$order->save();
 
-			OrderSeat::where('order_id', '=', $order->id)->update(['status' => config('payment.order_status.expired')]);
+			// OrderSeat::where('order_id', '=', $order->id)->update(['status' => config('payment.order_status.expired')]);
 
-			$this->UpdateStatusEventSeatByOrder($order, $status);
+			// $this->UpdateStatusEventSeatByOrder($order, $status);
 
 			return $order;
 		}
@@ -42,9 +42,9 @@ use App\EventSeat;
 			$order->status = $status;
 			$order->save();
 
-			OrderSeat::where('order_id', '=', $order->id)->update(['status' => $status]);
+			// OrderSeat::where('order_id', '=', $order->id)->update(['status' => $status]);
 
-			$this->UpdateStatusEventSeatByOrder($order, $status);
+			// $this->UpdateStatusEventSeatByOrder($order, $status);
 				
 			return $order;
 
@@ -55,9 +55,9 @@ use App\EventSeat;
 				$order->status = $status;
 				$order->save();
 
-				OrderSeat::where('order_id', '=', $order->id)->update(['status' => $status]);
+			// 	OrderSeat::where('order_id', '=', $order->id)->update(['status' => $status]);
 
-			$this->UpdateStatusEventSeatByOrder($order, $status);
+			// $this->UpdateStatusEventSeatByOrder($order, $status);
 				return $order;
 
 		}
@@ -67,9 +67,9 @@ use App\EventSeat;
 				$order->status = $status;
 				$order->save();
 
-				OrderSeat::where('order_id', '=', $order->id)->update(['status' => $status]);
+			// 	OrderSeat::where('order_id', '=', $order->id)->update(['status' => $status]);
 
-			$this->UpdateStatusEventSeatByOrder($order, $status);
+			// $this->UpdateStatusEventSeatByOrder($order, $status);
 				return $order;
 
 		}
@@ -95,9 +95,9 @@ use App\EventSeat;
 			$order->status = $status;
 			$order->save();
 
-			OrderSeat::where('order_id', '=', $order->id)->update(['status' => $status]);
+			// OrderSeat::where('order_id', '=', $order->id)->update(['status' => $status]);
 
-			$this->UpdateStatusEventSeatByOrder($order, $status);
+			// $this->UpdateStatusEventSeatByOrder($order, $status);
 				
 			return $order;
 
