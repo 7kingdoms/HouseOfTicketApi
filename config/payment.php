@@ -14,8 +14,9 @@ return [
 		'payment_boonterm' => 'P0', 
 		'payment_2c2p' => 'P1', 
 		'paided' => '01', 
-		'expired' => 'OE', 
 		'canceled' => 'C1', 
+		'expired' => 'OE', 
+		'payment_expired' => 'PE', 
 	],
 
 
