@@ -28,7 +28,8 @@ class PaymentBoontermService{
 
       $resp = json_decode($response->getBody(),true);
 
-      $transServ->SaveResponseFrontPayment($order, $resp);
+      $transServ_resp = new PaymentTransactionService();
+      $transServ_resp->SaveResponseFrontPayment($order, $resp);
 
       $orderServ = new OrderService();
       $order = $orderServ->SetStatusPaymentBoonterm($order);
