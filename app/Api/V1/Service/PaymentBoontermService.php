@@ -23,6 +23,15 @@ class PaymentBoontermService{
           }'
       ];
 
+      $path = public_path().'/temp/2c2bcallback.txt';
+      $file = fopen($path,"a");
+      fwrite($file,json_encode($request->input('token')));  
+      fwrite($file, "\n\n");
+
+      fwrite($file, '----------------'."\n\n");
+
+      fclose($file);
+
       $transServ = new PaymentTransactionService();
       $transServ->SaveRequestPayment($order, $params);
 
