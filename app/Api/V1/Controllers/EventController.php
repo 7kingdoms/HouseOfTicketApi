@@ -39,6 +39,27 @@ class EventController extends Controller
 
   use Helpers;
 
+  public function testBt(Request $request){
+
+    $params = [
+       'body' => '{
+            "data": {
+                "order_id": 1166838,
+                "ref_id": a00000
+            }
+        }'
+    ];
+
+  //  return $params;
+    $client = new \GuzzleHttp\Client();
+    $response = $client->request('POST', 'http://52.220.44.124/payment/cb/boonterm',$params);
+    $resp = json_decode($response->getBody(),true);
+
+    return $resp;
+
+
+  }
+
     public function hotProvince(){
 
       $hotprovinces = ProvinceHotDb::all();

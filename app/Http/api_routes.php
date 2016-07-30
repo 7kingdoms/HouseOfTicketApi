@@ -73,7 +73,7 @@ $api->version('v1', function ($api) {
 		$api->post('user/order_history/booking' ,'App\Api\V1\Controllers\UserController@getOrderHistoryBooking');
 		$api->post('user/order_history/payment' ,'App\Api\V1\Controllers\UserController@getOrderPayment');
 
-
+		$api->post('testBt' ,'App\Api\V1\Controllers\EventController@callbackBoonterm');
 
 	//
 	// // example of protected route
