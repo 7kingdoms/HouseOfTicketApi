@@ -16,7 +16,8 @@ class PaymentBoontermService{
          'body' => '{
           	"tel": "'.$order->user->phone.'", 
           	"cust_name": "'.$order->user->name.'", 
-          	"cust_lastname": "'. $order->user->surname.'",  
+            "cust_lastname": "'. $order->user->surname.'",  
+          	"price": '. $order->total_price.',  
           	"ref_id": "'.$order->order_no.'", 
           	"valid_day": '.$valid_day.', 
           	"valid_hour": '.$valid_hour.'
