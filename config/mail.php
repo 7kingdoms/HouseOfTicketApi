@@ -16,7 +16,9 @@ return [
     |
     */
 
-    'driver' => env('MAIL_DRIVER', 'mailgun'),
+    'driver' => 'smtp',
+    //'driver' => env('MAIL_DRIVER', 'ses'),
+  //  'driver' => env('MAIL_DRIVER', 'smtp'),
 
     /*
     |--------------------------------------------------------------------------
@@ -29,7 +31,8 @@ return [
     |
     */
 
-    'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
+    //'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
+    'host' => 'email-smtp.us-east-1.amazonaws.com',
 
     /*
     |--------------------------------------------------------------------------
@@ -81,7 +84,8 @@ return [
     |
     */
 
-    'username' => env('MAIL_USERNAME'),
+    'username' => 'AKIAIW3AMPXA3EXJLGCA',
+    //'username' => env('MAIL_USERNAME'),
 
     /*
     |--------------------------------------------------------------------------
@@ -94,7 +98,8 @@ return [
     |
     */
 
-    'password' => env('MAIL_PASSWORD'),
+    'password' => 'AiS3oVTQe5QVSiCKNTNrqYG3GQ6LzkLZkOjg81Q16ZYd',
+    //'password' => env('MAIL_PASSWORD'),
 
     /*
     |--------------------------------------------------------------------------
