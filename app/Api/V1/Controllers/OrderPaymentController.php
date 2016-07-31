@@ -70,6 +70,7 @@ class OrderPaymentController extends Controller
 		$order->order_price = $order_price;
 		$order->shipping_price = $shipping_price;
 		$order->total_price = $order_price+$shipping_price;
+    $order->shipping_vendor_params = $request->input('shipping_vendor_params');
 		$order->save();
 
 		if($orderServ->IsExpired($order))
@@ -99,7 +100,7 @@ class OrderPaymentController extends Controller
       	$order->save();
 
       	$redirect_url = env('FRONTEND_PAYMENT_BOONTERM_SUCCESS').'?t='.$order_id_enc.'&code='.$order_code.'&expire='.date('Y-m-d h:i', strtotime($expire_time)).'&phone='.$order->user->phone.'&price='.$order->total_price;
-      	
+
       }
       else{
       	$redirect_url = env('FRONTEND_PAYMENT_BOONTERM_ERROR').'?t='.$order_id_enc;

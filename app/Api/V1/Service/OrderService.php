@@ -45,7 +45,7 @@ use App\EventSeat;
 			// OrderSeat::where('order_id', '=', $order->id)->update(['status' => $status]);
 
 			// $this->UpdateStatusEventSeatByOrder($order, $status);
-				
+
 			return $order;
 
 		}
@@ -85,7 +85,7 @@ use App\EventSeat;
 			OrderSeat::where('order_id', '=', $order->id)->update(['status' => $status]);
 
 			$this->UpdateStatusEventSeatByOrder($order, $status);
-				
+
 			return $order;
 
 		}
@@ -98,7 +98,7 @@ use App\EventSeat;
 			// OrderSeat::where('order_id', '=', $order->id)->update(['status' => $status]);
 
 			// $this->UpdateStatusEventSeatByOrder($order, $status);
-				
+
 			return $order;
 
 		}
@@ -132,12 +132,12 @@ use App\EventSeat;
 			if(is_null($addit))
 			{
 				return 0;
-			}				
+			}
 			if(is_null($addit->additional))	{
 				return 0;
 			}
 
-			return $addit->additional->price;										
+			return $addit->additional->price;
 		}
 
 		public function GetShippingPrice($shipping_vendor_id){
@@ -162,8 +162,16 @@ use App\EventSeat;
 				// $c_seat_price+= $addition_price;
 
 				$total+= $c_seat_price;
+
+				if($order->payment_vendor_id == 1){
+					$total+=75;
+				}
+
 			}
 
+			if($order->payment_vendor_id == 2){
+				$total * 1.03;
+			}
 
 			return $total;
 		}
