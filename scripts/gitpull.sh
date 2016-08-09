@@ -1,2 +1,3 @@
 #!/bin/bash
-git pull
+cd /home/hotapi/public_html/HouseOfTicketApi;  git pull
+
